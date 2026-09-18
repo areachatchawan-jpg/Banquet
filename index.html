@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Banquet &amp; Event</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f5f7; --panel:#ffffff; --panel-2:#fafbfc; --ink:#14161a; --ink-2:#5b6472;
+  --line:#e2e5ea; --line-2:#eef0f3;
+  --accent:#6b3fa0; --accent-ink:#ffffff; --accent-soft:#f1ebf8;
+  --gold:#a8812c; --gold-soft:#fbf4e4;
+  --ok:#1f7a4d; --ok-soft:#e6f4ec;
+  --warn:#9a6a10; --warn-soft:#fdf3df;
+  --draft:#5b6472; --draft-soft:#eef0f3;
+  --radius:12px; --shadow:0 1px 2px rgba(16,20,28,.06), 0 6px 18px rgba(16,20,28,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101215; --panel:#191c21; --panel-2:#15181c; --ink:#eceef1; --ink-2:#9aa3af;
+    --line:#282d34; --line-2:#20242a;
+    --accent:#b493de; --accent-ink:#18101f; --accent-soft:#2a2233;
+    --gold:#d8b45f; --gold-soft:#2c2618;
+    --ok:#6cc79a; --ok-soft:#18271f;
+    --warn:#d9ab55; --warn-soft:#2a2418;
+    --draft:#9aa3af; --draft-soft:#22262c;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101215; --panel:#191c21; --panel-2:#15181c; --ink:#eceef1; --ink-2:#9aa3af;
+  --line:#282d34; --line-2:#20242a;
+  --accent:#b493de; --accent-ink:#18101f; --accent-soft:#2a2233;
+  --gold:#d8b45f; --gold-soft:#2c2618;
+  --ok:#6cc79a; --ok-soft:#18271f;
+  --warn:#d9ab55; --warn-soft:#2a2418;
+  --draft:#9aa3af; --draft-soft:#22262c;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:"IBM Plex Sans Thai","Noto Sans Thai",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:15px; line-height:1.5; -webkit-text-size-adjust:100%;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.01em}
+.wrap{max-width:1180px;margin:0 auto;padding:0 14px 96px}
+
+/* ---------- top bar ---------- */
+header{
+  position:sticky;top:0;z-index:20;
+  background:linear-gradient(180deg, var(--accent-soft) 0%, var(--bg) 72%);
+  border-bottom:1px solid var(--line); padding-top:env(safe-area-inset-top);
+}
+.bar{max-width:1180px;margin:0 auto;padding:10px 14px}
+.brandrow{display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.icb{flex:0 0 auto;width:36px;height:36px;border:1px solid var(--line);background:var(--panel);
+  border-radius:11px;font-size:15px;cursor:pointer;padding:0;line-height:1;
+  display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+.icb:active{transform:scale(.94)}
+.logo{display:flex;align-items:center;gap:9px;min-width:0}
+.logo img{height:40px;width:auto;max-width:150px;object-fit:contain;display:block;
+  background:#fff;border-radius:8px;padding:3px 6px}
+.logo svg{height:34px;width:auto;display:block}
+.strip{height:4px;border-radius:3px;margin:-1px 0 9px;
+  background:linear-gradient(90deg, var(--brand,#6b3fa0) 0%, var(--gold) 45%, var(--accent) 100%);
+  box-shadow:0 1px 6px var(--accent-soft)}
+.scanbtn{width:100%;margin:0 0 12px;padding:11px;border-radius:12px;font-size:14px;font-weight:600;
+  border:1.5px dashed var(--accent);background:var(--accent-soft);color:var(--accent);cursor:pointer}
+.scanbtn:active{transform:scale(.99)}
+.beohead{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--panel);
+  border:1px solid var(--line);border-radius:var(--radius);margin:12px 0}
+.beohead img{height:56px;max-width:190px;object-fit:contain;background:#fff;border-radius:8px;padding:4px 7px}
+.beohead svg{height:46px;width:auto}
+.beohead .t{flex:1;min-width:0}
+.beohead .t b{display:block;font-size:14px}
+.beohead .t span{font-size:12px;color:var(--ink-2)}
+.hotels{display:flex;gap:6px;background:var(--line-2);padding:3px;border-radius:10px}
+.hotels button{
+  flex:1;border:0;background:transparent;padding:7px 10px;border-radius:8px;
+  font-size:13px;font-weight:500;cursor:pointer;color:var(--ink-2);white-space:nowrap
+}
+.hotels button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:var(--shadow);font-weight:600}
+.filters{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.filters input,.filters select{
+  background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:14px;min-width:0
+}
+.filters input[type="search"]{flex:1;min-width:130px}
+
+/* ---------- summary ---------- */
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px}
+.stat .k{font-size:11px;color:var(--ink-2);letter-spacing:.02em}
+.stat .v{font-size:17px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums}
+
+/* ---------- list ---------- */
+.card{
+  -webkit-tap-highlight-color:rgba(107,63,160,.12);
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:12px 13px;margin-bottom:9px;box-shadow:var(--shadow);cursor:pointer
+}
+.card:active{transform:scale(.995)}
+.card .r1{display:flex;align-items:flex-start;gap:8px}
+.card .date{
+  background:var(--accent-soft);color:var(--accent);border-radius:9px;padding:6px 9px;
+  text-align:center;min-width:56px;font-weight:700;line-height:1.15
+}
+.card .date small{display:block;font-size:10px;font-weight:600;opacity:.85}
+.card .co{flex:1;min-width:0}
+.card .co b{display:block;font-size:14.5px;font-weight:600}
+.card .co span{display:block;font-size:12.5px;color:var(--ink-2);margin-top:2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .r2{display:flex;align-items:center;gap:8px;margin-top:9px;padding-top:9px;border-top:1px solid var(--line-2)}
+.card .amt{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums}
+.tag{font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.t-final{background:var(--ok-soft);color:var(--ok)}
+.t-confirm{background:var(--gold-soft);color:var(--gold)}
+.t-tentative{background:var(--warn-soft);color:var(--warn)}
+.t-draft{background:var(--draft-soft);color:var(--draft)}
+.pill{font-size:11.5px;color:var(--ink-2);background:var(--line-2);padding:3px 8px;border-radius:999px}
+
+table.grid{width:100%;border-collapse:collapse;background:var(--panel);
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;font-size:13.5px}
+table.grid th{background:var(--panel-2);text-align:left;padding:9px 10px;font-size:12px;
+  color:var(--ink-2);font-weight:600;border-bottom:1px solid var(--line)}
+table.grid td{padding:9px 10px;border-bottom:1px solid var(--line-2);vertical-align:top}
+table.grid tr:last-child td{border-bottom:0}
+table.grid tbody tr{cursor:pointer}
+table.grid tbody tr:hover{background:var(--panel-2)}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.desk{display:none}
+@media(min-width:860px){ .desk{display:block} .mob{display:none} .summary{grid-template-columns:repeat(4,1fr)} }
+
+.empty{text-align:center;color:var(--ink-2);padding:44px 16px;font-size:14px}
+
+/* ---------- fab ---------- */
+.fab2{
+  position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:30;
+  background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:999px;
+  padding:13px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:var(--shadow)}
+.scanning{position:fixed;inset:0;z-index:70;background:rgba(10,12,16,.72);
+  display:none;align-items:center;justify-content:center;padding:24px}
+.scanning.on{display:flex}
+.scanbox{background:var(--panel);border-radius:14px;padding:20px 22px;max-width:340px;width:100%;text-align:center}
+.scanbox b{display:block;font-size:15px;margin-bottom:6px}
+.scanbox p{margin:0 0 14px;font-size:13px;color:var(--ink-2);line-height:1.5}
+.spin{width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--accent);
+  border-radius:50%;margin:0 auto 12px;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.fab{
+  position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:30;
+  background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;
+  padding:13px 20px;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.2)
+}
+
+/* ---------- editor ---------- */
+.sheet{position:fixed;inset:0;z-index:40;background:var(--bg);overflow-y:auto;display:none}
+.sheet.on{display:block}
+.sheet .bar{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);
+  padding:calc(10px + env(safe-area-inset-top)) 14px 10px;display:flex;gap:8px;align-items:center;z-index:5}
+.sheet .bar h2{font-size:15px;flex:1}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:8px 13px;
+  font-size:14px;font-weight:500;cursor:pointer}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:transparent;font-weight:600}
+.btn.dang{color:#c0392b;border-color:#e8bcb6}
+.btn.sm{padding:5px 10px;font-size:12.5px}
+.btn.sm.pri{padding:6px 12px}
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  margin:12px 0;overflow:hidden}
+.sec>summary{padding:12px 14px;font-weight:600;font-size:14px;cursor:pointer;list-style:none;
+  display:flex;align-items:center;gap:8px}
+.sec>summary::-webkit-details-marker{display:none}
+.sec>summary::after{content:"▾";margin-left:auto;color:var(--ink-2);font-size:12px}
+.sec[open]>summary{border-bottom:1px solid var(--line-2)}
+.sec[open]>summary::after{content:"▴"}
+.secbody{padding:12px 14px}
+.f{margin-bottom:11px}
+.f label{display:block;font-size:12px;color:var(--ink-2);margin-bottom:4px;font-weight:500}
+.f input,.f select,.f textarea{
+  width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:9px;
+  padding:9px 10px;font-size:15px}
+.f textarea{min-height:88px;resize:vertical;line-height:1.55}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.line{border:1px solid var(--line);border-radius:10px;padding:11px;margin-bottom:10px;background:var(--panel-2)}
+.line .lh{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.line .lh b{font-size:12.5px;color:var(--ink-2)}
+.line .tot{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums;font-size:14px}
+.gtot{display:flex;align-items:center;padding:12px 14px;border-top:1px solid var(--line);
+  font-weight:700;background:var(--panel-2)}
+.gtot span:last-child{margin-left:auto;font-size:18px;font-variant-numeric:tabular-nums}
+.hint{font-size:11.5px;color:var(--ink-2);margin-top:-4px;margin-bottom:10px}
+.grp{margin-bottom:14px}
+.grp .gh{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.grp .gh b{font-size:12.5px}
+.grp .gh i{font-style:normal;font-size:11px;color:var(--ink-2);margin-left:auto;
+  background:var(--line-2);padding:2px 7px;border-radius:999px}
+.grp .gh i.full{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;
+  padding:6px 11px;font-size:13px;cursor:pointer;line-height:1.3;text-align:left}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:transparent;font-weight:600}
+.fixed{background:var(--panel-2);border:1px solid var(--line-2);border-radius:10px;
+  padding:9px 11px;margin-bottom:7px;font-size:12.5px;color:var(--ink-2)}
+.fixed b{display:block;color:var(--ink);font-size:11.5px;margin-bottom:2px;letter-spacing:.02em}
+.setlist{columns:2;column-gap:14px;font-size:12.5px}
+@media(max-width:560px){ .setlist{columns:1} }
+.setlist div{break-inside:avoid;margin-bottom:8px}
+.setlist b{display:block;font-size:11px;color:var(--accent);letter-spacing:.03em;margin-bottom:1px}
+.setlist span{display:block;color:var(--ink-2);line-height:1.45}
+.files{margin-bottom:10px}
+.fitem{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);
+  border-radius:10px;padding:8px;margin-bottom:8px;background:var(--panel-2)}
+.fitem>a{flex:0 0 76px}
+.fitem img{width:76px;height:58px;object-fit:cover;display:block;background:#fff;border-radius:6px}
+.fitem .doc{width:76px;height:58px;display:flex;align-items:center;justify-content:center;
+  font-size:22px;background:#fff;border-radius:6px}
+.fitem .fmeta{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.fitem select{background:var(--panel);border:1px solid var(--line);border-radius:7px;
+  padding:5px 7px;font-size:12.5px;width:100%}
+.fitem .fn{font-size:11px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fitem .fx{flex:0 0 24px;border:0;background:transparent;color:var(--ink-2);cursor:pointer;font-size:13px;padding:0}
+.dthumbs{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 8px}
+.dthumbs a{display:block;width:84px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.dthumbs img{width:100%;height:56px;object-fit:cover;display:block;background:#fff}
+.money{display:flex;gap:10px;padding:12px 14px;border-top:1px solid var(--line);background:var(--panel-2);
+  font-size:13px;flex-wrap:wrap}
+.money div{flex:1;min-width:92px}
+.money span{display:block;font-size:11px;color:var(--ink-2)}
+.money b{font-size:16px;font-variant-numeric:tabular-nums}
+.kv{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:13.5px}
+.kv:last-child{border-bottom:0}
+.kv b{flex:0 0 108px;font-weight:500;color:var(--ink-2);font-size:12.5px}
+.kv span{flex:1;min-width:0;word-break:break-word}
+.vrow{display:flex;gap:8px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:13.5px}
+.vrow:last-child{border-bottom:0}
+.vrow .vt{flex:1;min-width:0}
+.vrow .vt small{display:block;color:var(--ink-2);font-size:12px;margin-top:1px}
+.vrow .vn{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.vtask{display:flex;gap:8px;align-items:flex-start;padding:5px 0;font-size:13.5px}
+.vtask .tick{flex:0 0 24px;height:24px;border:1px solid var(--line);background:var(--panel-2);
+  border-radius:7px;cursor:pointer;font-size:11px;color:transparent;padding:0}
+.vtask .tick[aria-pressed="true"]{background:var(--ok);border-color:transparent;color:#fff}
+.vtask.done span{text-decoration:line-through;color:var(--ink-2)}
+.vtask small{color:var(--accent);font-weight:600;white-space:nowrap}
+.rd{display:flex;gap:9px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--line-2);font-size:13.5px}
+.rd:last-child{border-bottom:0}
+.rd b{flex:0 0 62px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;font-size:13px}
+.rd span{flex:1;min-width:0}
+.rd small{color:var(--ink-2);white-space:nowrap;font-size:12px}
+.rdrow{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.rdrow .rt{flex:0 0 74px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:13px}
+.rdrow .ri{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:13.5px}
+.rdrow .rw{flex:0 0 78px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:12.5px}
+.rdrow .del{flex:0 0 24px;border:0;background:transparent;color:var(--ink-2);cursor:pointer;font-size:13px;padding:0}
+.same{display:flex;gap:8px;align-items:center;padding:8px 10px;border:1px solid var(--line);
+  border-radius:10px;margin-bottom:7px;background:var(--panel-2);cursor:pointer;font-size:13px}
+.same b{flex:1;min-width:0;font-weight:600}
+.gate{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;
+  padding:22px;overflow-y:auto;
+  background:
+    radial-gradient(120% 80% at 50% -10%, var(--brand,#6b3fa0) 0%, transparent 62%),
+    radial-gradient(90% 60% at 110% 110%, var(--gold) 0%, transparent 55%),
+    var(--bg);}
+.gate.on{display:flex}
+.gate::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.88) 45%, var(--bg) 100%)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .gate::after{
+  background:linear-gradient(180deg, rgba(16,18,21,.45) 0%, rgba(16,18,21,.86) 45%, var(--bg) 100%)} }
+:root[data-theme="dark"] .gate::after{
+  background:linear-gradient(180deg, rgba(16,18,21,.45) 0%, rgba(16,18,21,.86) 45%, var(--bg) 100%)}
+.gatebox{position:relative;z-index:1;width:100%;max-width:352px;text-align:center;
+  background:var(--panel);border:1px solid var(--line);border-radius:20px;
+  padding:30px 26px 24px;box-shadow:0 2px 6px rgba(16,20,28,.06), 0 24px 60px rgba(16,20,28,.16)}
+.gatebox .gl{margin-bottom:6px;display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap}
+.gatebox .gl img{height:56px;width:auto;max-width:132px;object-fit:contain;
+  background:#fff;border-radius:10px;padding:5px 8px}
+.gatebox .gl svg{height:56px;width:auto}
+.gatebox .rule{width:42px;height:2px;border-radius:2px;margin:16px auto 14px;
+  background:linear-gradient(90deg,var(--accent),var(--gold))}
+.gatebox h2{font-size:19px;letter-spacing:-.01em;margin-bottom:5px}
+.gatebox p{margin:0 0 20px;font-size:12.5px;color:var(--ink-2);line-height:1.55}
+.gatebox input{width:100%;background:var(--panel-2);border:1.5px solid var(--line);border-radius:12px;
+  padding:14px;font-size:17px;text-align:center;letter-spacing:4px;margin-bottom:6px;
+  transition:border-color .15s, box-shadow .15s}
+.gatebox input:focus{outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-soft);background:var(--panel)}
+.gatebox input::placeholder{letter-spacing:0;color:var(--ink-2);opacity:.6}
+.gatebox .btn{width:100%;margin-bottom:9px;padding:13px;font-size:15px;border-radius:12px}
+.gatebox .btn.ghost{background:transparent;border-color:transparent;color:var(--ink-2);
+  font-weight:500;margin-bottom:0}
+.gatebox .btn.ghost:active{background:var(--line-2)}
+.gatebox .err{color:#c0392b;font-size:12.5px;min-height:20px;line-height:1.5}
+.gatebox .foot{margin-top:18px;padding-top:15px;border-top:1px solid var(--line-2);
+  font-size:11px;color:var(--ink-2);letter-spacing:.04em}
+.roletag{font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:999px;
+  background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.lb{position:fixed;inset:0;z-index:80;background:rgba(8,10,14,.94);display:none;flex-direction:column}
+.lb.on{display:flex}
+.lbbar{display:flex;gap:8px;align-items:center;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;color:#fff}
+.lbbar .nm{flex:1;min-width:0;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.85}
+.lbbar button,.lbbar a{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;
+  border-radius:9px;padding:7px 12px;font-size:14px;cursor:pointer;text-decoration:none;line-height:1}
+.lbwrap{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;display:flex;align-items:flex-start;justify-content:center}
+.lbwrap img{display:block;width:100%;height:auto;transition:width .18s}
+.br{display:flex;align-items:center;gap:9px;margin-bottom:7px;font-size:13px}
+.br .bl{flex:0 0 116px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.br .bb{flex:1;height:9px;background:var(--line-2);border-radius:999px;overflow:hidden}
+.br .bb i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.br .bv{flex:0 0 auto;font-variant-numeric:tabular-nums;font-weight:600;font-size:12.5px}
+.rep h3{margin:0 0 3px;font-size:13px}
+.rtab{width:100%;border-collapse:collapse;font-size:12.5px}
+.rtab th{text-align:left;padding:6px 6px;color:var(--ink-2);font-size:11.5px;border-bottom:1px solid var(--line)}
+.rtab td{padding:6px 6px;border-bottom:1px solid var(--line-2);vertical-align:top}
+.rtab td.n{text-align:right;font-variant-numeric:tabular-nums}
+.vdept{margin-bottom:13px}
+.vdept>h4{margin:0 0 4px;font-size:12.5px;color:var(--ink-2);display:flex;gap:8px}
+.vdept>h4 i{font-style:normal;margin-left:auto;background:var(--line-2);padding:1px 7px;border-radius:999px;font-size:11px}
+.vdept>h4 i.full{background:var(--ok-soft);color:var(--ok);font-weight:600}
+.picked{font-size:12.5px;color:var(--ink-2);margin-top:6px;line-height:1.5}
+.task{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.task .tick{flex:0 0 28px;height:28px;border:1px solid var(--line);background:var(--panel);
+  border-radius:8px;cursor:pointer;font-size:13px;color:transparent;padding:0}
+.task .tick[aria-pressed="true"]{background:var(--ok);border-color:transparent;color:#fff}
+.task .tt{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);
+  border-radius:8px;padding:6px 9px;font-size:13.5px}
+.task .tw{flex:0 0 92px;background:var(--panel);border:1px solid var(--line);
+  border-radius:8px;padding:6px 8px;font-size:12.5px}
+.task .del{flex:0 0 26px;border:0;background:transparent;color:var(--ink-2);cursor:pointer;font-size:13px;padding:0}
+.task.done .tt{text-decoration:line-through;color:var(--ink-2)}
+.dcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:12px 13px;margin-bottom:10px;box-shadow:var(--shadow)}
+.dcard .dh{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px;
+  padding-bottom:9px;border-bottom:1px solid var(--line-2);cursor:pointer}
+.dcard .dh .co b{display:block;font-size:14.5px}
+.dcard .dh .co span{display:block;font-size:12.5px;color:var(--ink-2)}
+.dcard .tl{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:13.5px}
+.dcard .tl .tick{flex:0 0 26px;height:26px;border:1px solid var(--line);background:var(--panel-2);
+  border-radius:7px;cursor:pointer;font-size:12px;color:transparent;padding:0}
+.dcard .tl .tick[aria-pressed="true"]{background:var(--ok);border-color:transparent;color:#fff}
+.dcard .tl.done span{text-decoration:line-through;color:var(--ink-2)}
+.dcard .tl small{color:var(--accent);font-weight:600;white-space:nowrap}
+.dcard .nomore{font-size:12.5px;color:var(--ink-2);padding:4px 0}
+.viewsw{display:flex;gap:6px;background:var(--line-2);padding:3px;border-radius:10px;margin-top:8px}
+.viewsw button{flex:1;border:0;background:transparent;padding:7px 10px;border-radius:8px;
+  font-size:13px;font-weight:500;cursor:pointer;color:var(--ink-2)}
+.viewsw button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:var(--shadow);font-weight:600}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:26px;z-index:60;
+  background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:13.5px;
+  opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:.95}
+.banner{background:var(--warn-soft);color:var(--warn);border:1px solid var(--line);
+  border-radius:10px;padding:10px 12px;font-size:13px;margin:12px 0}
+
+@media print{
+  header,.fab,.filters,.summary,.sheet .bar,.btn{display:none !important}
+  .beohead{border:0;padding:0 0 10px;border-bottom:2px solid #333}
+  body{background:#fff;color:#000;font-size:12px}
+  .sheet{position:static;display:block}
+  .sec{break-inside:avoid;border:1px solid #999}
+  .sec>summary{background:#eee}
+  .fitem{width:46%} .fitem img{height:auto;max-height:340px;object-fit:contain} .fitem .fx{display:none}
+  details:not([open])>*:not(summary){display:block !important}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <div class="brandrow">
+      <div class="logo" id="logoBox"></div>
+      <span style="flex:1"></span>
+      <span class="roletag" id="roleTag"></span>
+      <button class="icb" id="cfgBtn" title="ตั้งค่า">⚙</button>
+      <button class="icb" id="themeBtn" title="สลับโหมดสี">◐</button>
+      <button class="icb" id="outBtn" title="ออกจากระบบ">⎋</button>
+      <span style="flex:0 0 auto;font-size:9px;color:var(--ink-2);opacity:.6">1.0</span>
+    </div>
+    <div class="strip" id="strip"></div>
+    <button id="logoBtn" style="display:none" aria-hidden="true"></button>
+<input type="file" id="attachFile" accept="image/*,application/pdf" multiple hidden>
+<input type="file" id="logoFile" accept="image/png,image/jpeg,image/svg+xml,image/webp" hidden>
+    <div class="hotels" id="hotelTabs"></div>
+    <div class="viewsw" id="viewSw">
+      <button data-v="all" aria-pressed="true">ทุกงาน</button>
+      <button data-v="dept" aria-pressed="false">แผนกของฉัน</button>
+      <button data-v="report" aria-pressed="false">รายงาน</button>
+    </div>
+    <div class="filters" id="deptRow" style="display:none">
+      <select id="myDept" style="flex:1"></select>
+      <button class="btn sm" id="deptCfg">แก้ชื่อแผนก</button>
+    </div>
+    <div class="filters">
+      <input type="search" id="q" placeholder="ค้นหา ลูกค้า / Function No.">
+      <select id="fMonth"></select>
+      <select id="fStatus">
+        <option value="">ทุกสถานะ</option>
+        <option value="Final">Final</option>
+        <option value="Confirm">Confirm</option>
+        <option value="Tentative">Tentative</option>
+        <option value="Draft">Draft</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div id="warn"></div>
+  <div class="summary" id="summary"></div>
+  <button class="scanbtn" id="scanBtn" style="display:none">อ่านงานใหม่จากรูป BEO</button>
+  <div id="list"></div>
+</div>
+
+<button class="fab" id="addBtn">+ เพิ่มงาน</button>
+<input type="file" id="scanFile" accept="image/jpeg,image/png,image/webp" multiple hidden>
+<div class="scanning" id="scanning"><div class="scanbox">
+  <div class="spin"></div><b id="scanTitle">กำลังอ่านรูป BEO...</b>
+  <p id="scanMsg">ใช้เวลาประมาณ 20–60 วินาที</p>
+  <button class="btn" id="scanCancel">ยกเลิก</button>
+</div></div>
+
+<div class="sheet" id="sheet">
+  <div class="bar">
+    <button class="btn" id="backBtn">← กลับ</button>
+    <h2 id="sheetTitle">งานใหม่</h2>
+    <button class="btn sm" id="printBtn">พิมพ์</button>
+    <button class="btn pri" id="editBtn">แก้ไข</button>
+    <button class="btn pri" id="saveBtn">บันทึก</button>
+  </div>
+  <div class="wrap" id="form"></div>
+</div>
+
+<div class="sheet" id="csheet">
+  <div class="bar">
+    <button class="btn" id="cBack">← กลับ</button>
+    <h2>ตั้งค่าระบบ</h2>
+    <button class="btn pri" id="cSave">บันทึก</button>
+  </div>
+  <div class="wrap" id="cForm"></div>
+</div>
+
+<div class="sheet" id="dsheet">
+  <div class="bar">
+    <button class="btn" id="dBack">← กลับ</button>
+    <h2>ชื่อแผนก</h2>
+    <button class="btn pri" id="dSave">บันทึก</button>
+  </div>
+  <div class="wrap">
+    <div class="sec"><div class="secbody">
+      <div class="hint">แก้ชื่อได้ตามโครงสร้างจริงของโรงแรม · ลบแผนกที่ไม่ใช้ออกได้ · งานที่บันทึกไว้แล้วไม่หาย</div>
+      <div id="dList"></div>
+      <button class="btn sm" id="dAdd">+ เพิ่มแผนก</button>
+    </div></div>
+  </div>
+</div>
+
+<div class="gate" id="gate">
+  <div class="gatebox">
+    <div class="gl" id="gateLogo"></div>
+    <div class="rule"></div>
+    <h2 id="gateTitle">Banquet &amp; Event</h2>
+    <p>ระบบจัดการงานเลี้ยงและงานประชุม<br>ใส่รหัสเพื่อเข้าใช้งาน</p>
+    <input type="password" id="gateCode" inputmode="numeric" placeholder="รหัสผ่าน" autocomplete="off">
+    <div class="err" id="gateErr"></div>
+    <button class="btn pri" id="gateGo">เข้าสู่ระบบ</button>
+    <button class="btn ghost" id="gateView">เข้าดูอย่างเดียว →</button>
+    <div class="foot" id="gateFoot"></div>
+  </div>
+</div>
+
+<div class="lb" id="lb">
+  <div class="lbbar">
+    <button id="lbClose">✕ ปิด</button>
+    <span class="nm" id="lbName"></span>
+    <button id="lbOut">−</button><button id="lbIn">+</button>
+    <a id="lbOpen" target="_blank" rel="noopener">เปิดไฟล์</a>
+  </div>
+  <div class="lbwrap" id="lbWrap"><img id="lbImg" alt=""></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= config ================= */
+const DEF_HOTELS = {
+  qsl: {
+    name: "Queensland Hotel Bangkok",
+    short: "Queensland", color:"#6b3fa0",
+    rooms: ["Diamond Dome 1, 22FL","Diamond Dome 2, 22FL","Mum's Bistro, 20FL","Lobby / อื่นๆ"]
+  },
+  bys: {
+    name: "Baiyoke Sky Hotel",
+    short: "Baiyoke Sky", color:"#1b5f96",
+    rooms: ["Grand Ballroom","Convention Hall","Meeting Room","ห้องอาหาร / อื่นๆ"]
+  }
+};
+let HOTELS = JSON.parse(JSON.stringify(DEF_HOTELS));
+let HOTEL_ORDER = Object.keys(DEF_HOTELS);
+let APPTITLE = "Banquet & Event";
+
+const LOGO_Q = `<svg viewBox="0 0 260 74" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Queensland Hotel Bangkok">
+<g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M78 34c17-9 87-9 104 0"/>
+<path d="M78 34l-4-12 12 6 18-14 10 14 12-18 12 18 10-14 18 14 12-6-4 12"/>
+</g>
+<g fill="currentColor" stroke="none">
+<circle cx="74" cy="21" r="3"/><circle cx="130" cy="18" r="3.4"/><circle cx="186" cy="21" r="3"/>
+<circle cx="104" cy="25" r="2.4"/><circle cx="156" cy="25" r="2.4"/>
+</g>
+<text x="130" y="58" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="25" letter-spacing="2.5" fill="currentColor">QUEENSLAND</text>
+<text x="130" y="70" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="9" letter-spacing="5.5" fill="currentColor">HOTEL BANGKOK</text></svg>`;
+const LOGO_B = `<svg viewBox="0 0 260 74" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Baiyoke Sky Hotel">
+<g fill="currentColor" stroke="none">
+<path d="M118 40V16h24v24l-5 6h-14z"/><path d="M126 16V8h8v8z"/><rect x="129" y="0" width="2" height="8"/>
+<path d="M112 40h36l4 6h-44z"/>
+</g>
+<g fill="none" stroke="currentColor" stroke-width="1.6"><path d="M96 46h68"/></g>
+<text x="130" y="62" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="22" letter-spacing="3" fill="currentColor">BAIYOKE SKY</text>
+<text x="130" y="72" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="8" letter-spacing="5" fill="currentColor">HOTEL BANGKOK</text></svg>`;
+
+const DEF_TYPES = ["Break","Lunch","Dinner","Buffet Dinner","Coffee Break","เช่าห้อง (Rent room)",
+  "ค่าเช่าจอ LED","ค่านำเข้า Light","ค่าเช่าไมค์ / ลำโพง","ค่าเช่าอุปกรณ์ Sound",
+  "ค่านำเข้าอาหารและเครื่องดื่ม","ค่าถ่ายรูป","เครื่องดื่ม","อื่นๆ"];
+const DEF_MENUSETS = ["งานประชุม 500 บาท","งานประชุม 400 บาท","Party Buffet A (50 ท่าน)","Party Buffet B (100 ท่านขึ้นไป)","Coffee Break A (2 อย่าง)","Coffee Break B (3 อย่าง)","Coffee Break C (4 อย่าง)","Buffet A","Buffet B","Buffet C","Buffet D","Buffet F","Buffet Dinner (ตามแนบ)","Bento Set","โต๊ะจีน","อื่นๆ"];
+const STATUSES = ["Draft","Tentative","Confirm","Final"];
+const DEF_FILETAGS = ["ผังที่นั่ง","ผังโต๊ะ / ผังโต๊ะจีน","ผังห้อง / แปลน","อาร์ตเวิร์ค Backdrop",
+  "ป้ายต้อนรับ / Sign board","โปสเตอร์ / Stand poster","การ์ดเชิญ","ซุ้มถ่ายภาพ","รูปแบบเค้ก",
+  "ตกแต่ง / จัดดอกไม้","ใบเสนอราคา","ใบเสร็จ / มัดจำ","ใบแก้ไข (Adjustment)","เมนู","Run down","รูปอ้างอิง","อื่นๆ"];
+const DEF_KINDS = ["ประชุม / สัมมนา","งานเลี้ยง / จัดเลี้ยง","งานแต่ง / หมั้น","คอนเสิร์ต / แฟนมีต","เช่าห้องอย่างเดียว"];
+let TYPES=[...DEF_TYPES], MENUSETS=[...DEF_MENUSETS], FILETAGS=[...DEF_FILETAGS], KINDS=[...DEF_KINDS];
+let RENTAL_KINDS = ["คอนเสิร์ต / แฟนมีต","เช่าห้องอย่างเดียว"];
+const hasFood = f => !RENTAL_KINDS.includes(f.kind||KINDS[0]);
+const isRental = f => RENTAL_KINDS.includes(f.kind||KINDS[0]);
+const DEFAULT_DEPTS = [
+  {k:"banquet",l:"BANQUET ARRANGEMENT"},
+  {k:"bar",l:"BAR ARRANGEMENT"},
+  {k:"chef",l:"CHEF / KITCHEN / BAKERY"},
+  {k:"house",l:"HOUSEKEEPING"},
+  {k:"eng",l:"ENGINEERING / EQUIPMENT"},
+  {k:"sec",l:"SECURITY / PARKING"},
+  {k:"sales",l:"SALES"},
+  {k:"event",l:"EVENT"}
+];
+let DEPTS = DEFAULT_DEPTS.slice();
+const nf = n => (Number(n)||0).toLocaleString("th-TH");
+
+/* ===== รายการอาหารงานประชุม (Meeting Set) — ติ๊กเลือก ===== */
+/* ===== ชุดเมนูที่ติ๊กเลือกได้ =====
+   แต่ละชุด: {groups:[{k,l,max,items}], fixed:[[หัวข้อ,ข้อความ]]} */
+
+/* ---------- รายการร่วม (อาหารว่าง / Coffee Break) ---------- */
+const CB_SAVOURY = ["พัฟไก่","พัฟไส้กระเพราไก่","กะหรี่พัฟไก่","พัฟทูน่า",
+  "แซนวิชแฮมชีส","แซนวิชทูน่า","แซนวิชไก่",
+  "ซอสเซสโรล (แป้งพาย)","ขนมปังไส้แฮม","ขนมปังไส้กรอกไก่","ขนมปังไส้เบคอน",
+  "ขนมปังไส้หมูหยอง","ครัวซองท์ไส้แฮม","บันกาแฟ"];
+const CB_ROLL = ["แยมโรลช็อกโกแลต","แยมโรลสตรอเบอร์รี่","แยมโรลมะนาว","แยมโรลส้ม",
+  "แยมโรลวานิลา","แยมโรลกาแฟ"];
+const CB_CAKE = ["อัพไซด์ดาวน์เค้ก","เค้กกล้วยหอม","เค้กกาแฟ","เอแคลร์","มัฟฟินกล้วยหอม",
+  "เดนิชอัลมอนด์","ช็อกโกแลตคัพเค้ก","เค้กวนิลา","คัพเค้กกล้วยหอม","เค้กช็อกโกแลต",
+  "มัฟฟินลูกเกด","เค้กท็อฟฟี่","บราวนี่","พายสับปะรด","ขนมปังเนยสด"];
+const CB_CAKE_A = CB_CAKE.filter(x=>x!=="มัฟฟินลูกเกด");   /* เมนู A ตัดมัฟฟินลูกเกดออก */
+const CB_THAIWET = ["บัวลอย","ครองแครงกะทิ","ถั่วเขียวต้มใส่ลูกชิด","แกงบวด"];
+const CB_THAIFRUIT = ["วุ้นต่างๆ","ตะโก้","ผลไม้สด","ขนมชั้น"];
+
+const SALADBAR_TXT = "ผักสลัด · มะเขือเทศเชอร์รี่ · แตงกวา · หอมใหญ่สไลด์ · แครอทสไลด์ · ข้าวโพดต้ม · ถั่วลันเตาต้ม · ลูกเดือยต้ม · มิกซ์สลัด 2 รายการ";
+const DRESSING_TXT = "ซอสเธาซันไอแลนด์ · ซอสฝรั่งเศส · ซอสอิตาลี · ซอสน้ำส้มหมัก · ซอสหวาน · ซอสซีซ่าร์";
+const JPN_TXT = "บะหมี่เย็น-เทมปุระ · ปูอัด · ไข่หวาน · ปลาดิบ · MAKI (ข้าวห่อไส้รวม/ปูอัด/ไข่หวาน/แตง) · NIGIRI (แซลมอน/ปูอัด/ไข่หวาน/ยำสาหร่ายสด) · ซุปเต้าเจี้ยว · ข้าวแกงกะหรี่+ทงคัตสึ";
+const PASTA_TXT = "ผัดมักกะโรนี · สปาเก็ตตี้ราดซอส (คาโบนาร่า / มารินาร่า) · ขนมปังเนยกระเทียม";
+
+const MENUDEFS = {};
+
+/* ---------- 1) งานประชุม 500 บาท (ใช้ key เดิม ข้อมูลเก่าไม่หาย) ---------- */
+const DEF500 = {groups:[
+ {k:"soup",l:"ซุป",max:1,items:["ซุปซี่โครงหมูตุ๋นยาจีน","ต้มแซ่บซี่โครงหมู","ต้มข่าไก่","กระเพาะปลา","ซุปครีมเห็ด+ขนมปัง+เนย","ซุปครีมไก่+ขนมปัง+เนย","ต้มยำปลา / ไก่ / ทะเล"]},
+ {k:"yum",l:"STARTER · ยำ / สลัดคลุก",max:1,items:["ยำหมูยอไข่ดาว","ยำหมูย่าง","ยำวุ้นเส้นทะเล","ยำไก่ย่าง","ลาบหมู / ไก่"]},
+ {k:"tod1",l:"STARTER · ของทอด",max:2,items:["หอยจ๊อ","ปอเปี๊ยะ","เกี๊ยวกรอบซอสซัลซ่า","ข้าวตังหน้าตั้ง"]},
+ {k:"salad",l:"MIXED SALAD",max:2,items:["สลัดผลไม้","สลัดธัญพืช","สลัดมะกะโรนี","สลัดมันฝรั่ง"]},
+ {k:"prik",l:"ซุ้มน้ำพริกและเครื่องเคียง",max:2,items:["น้ำพริกกะปิ","น้ำพริกลงเรือ","น้ำพริกปลาป่น","หลนเต้าเจี้ยว","กะปิคั่ว","น้ำพริกอ่อง","น้ำพริกหมู / ไก่"]},
+ {k:"pad",l:"เมนูผัด",max:2,items:["ผัดพริกขิงไก่กรอบ","ผัดพริกขิงปลาดุกทอดกรอบ","กระเพราหมูสับใส่หมูกรอบ","ผัดผักกาดขาวลูกชิ้นกุ้ง/เต้าหู้","กระเพราไก่","ผัดดอกกะหล่ำแฮม","ผัดผักสี่สหาย","หมูสามชั้นผัดกะปิ","กะหล่ำปลีผัดแฮม/หมู/เต้าหู้","ผัดบร็อคโคลี่ซอสไข่กุ้ง","ผัดคะน้าหมูกรอบ","ผัดพริกแกงหมูตุ๋น","หน่อไม้ผัดไก่ใส่พริกเหลือง","ทะเลผัดฉ่า","ทะเลผัดผงกะหรี่","ผัดพริกแกงไก่/หมู/ลูกชิ้น-มะเขือยาว","ผัดสามเหม็น (สะตอ/ชะอม/กระเทียมดอง)","เปรี้ยวหวานปลาทอด/ลูกชิ้นกุ้ง/หมู-ไก่ปั้นก้อนทอด"]},
+ {k:"kaeng",l:"เมนูแกง",max:2,items:["สตูว์ไก่ / หมู","ต้มแซ่บซี่โครงหมูอ่อน","ต้มยำไก่ / ปลา","ปีกไก่ตุ๋นฟัก","ต้มจิ๋ว","บักกุ๊ดเต๋","มัสมั่นหมู / ไก่","แพนงไก่ / หมู","แกงคั่วสับปะรด","แกงเทโพหมูสามชั้น","แกงส้มผักรวม + กุ้ง","แกงไก่/หมู ใส่หน่อไม้","แกงกะหรี่ไก่","แกงเขียวหวานไก่ / หมู / ลูกชิ้นปลา","แกงคั่วหน่อไม้ดอง ไก่ / กุ้ง / หอยแมลงภู่"]},
+ {k:"tod2",l:"เมนูทอด / อบ",max:2,items:["ไก่ทอดจิ้มแจ่ว","หมูชิ้นทอดจิ้มแจ่ว","ไก่อบ","หมูอบ","ซี่โครงหมูอบ","ไก่กระเทียมแบบจีน","หมูกระเทียมแบบจีน","ทอดมันปลา","ทอดมันหมู","ทอดมันข้าวโพด","หมูปั้นก้อนทอด","ไก่ปั้นก้อนทอด","หมูย่างจิ้มแจ่ว"]},
+ {k:"egg",l:"เมนูไข่",max:1,items:["ไข่ดาวลูกเขย","ไข่ลูกเขย","ไข่เจียวทรงเครื่อง"]},
+ {k:"knNam",l:"ซุ้มขนมจีน · น้ำ",max:1,items:["น้ำพริก","น้ำยาป่า หรือ น้ำยากะทิ","ซาวน้ำ"]},
+ {k:"knKaeng",l:"ซุ้มขนมจีน · แกง",max:1,items:["แกงไตปลา","น้ำเงี้ยว","แกงเขียวหวานลูกชิ้นปลากราย"]},
+ {k:"rice",l:"ประเภทข้าวผัด",max:1,items:["ข้าวผัดแฮม","ข้าวผัดหยางโจว","ข้าวผัดไส้กรอก","ข้าวผัดไข่ผัก 3 สี"]},
+ {k:"noodle",l:"ประเภทเส้น",max:1,items:["ผัดซีอิ๊ว","ผัดไทยกุ้งสด","ผัดหมี่ฮกเกี้ยน","มักกะโรนีผัดไส้กรอก","สปาเก็ตตี้ซอสไก่","สปาเก็ตตี้ผัดขี้เมา"]},
+ {k:"kuay",l:"ซุ้มทำสด · ซุ้มก๋วยเตี๋ยว",max:1,items:["ก๋วยเตี๋ยวลูกชิ้นปลา","ก๋วยเตี๋ยวเย็นตาโฟ-สุกี้","ก๋วยเตี๋ยวต้มยำไข่หวาน","ก๋วยเตี๋ยวลูกชิ้นหมู+หมูสับน้ำใส","บะหมี่เกี๊ยว หมูแดง","ก๋วยเตี๋ยวชาบูหมูน้ำตก"]},
+ {k:"dessertHot",l:"ขนมไทยหม้อร้อน",max:1,items:["ครองแครงกะทิ","ปลากริม","กล้วยบวชชี","บัวลอยเผือก"]}
+],fixed:[
+ ["SALAD BAR","ผักสลัด · ถั่วแดงต้ม · ข้าวโพดต้ม · ลูกเดือยต้ม · มะเขือเทศเชอร์รี่ · แตงกวา · หอมใหญ่สไลด์ · แครอทสไลด์ · กรูตอง (ขนมปังอบกรอบ) · ไข่ต้มสับ · เบคอนสับ"],
+ ["DRESSING","ซอสเธาซันไอแลนด์ · ซอสอิตาลี · ซอสหวาน · ซอสฝรั่งเศส · ซอสน้ำส้มหมัก"],
+ ["ซุ้มญี่ปุ่น","ข้าวห่อไส้รวม · ข้าวห่อไส้ไข่หวาน · ข้าวห่อไส้ปูอัด · ข้าวห่อไส้แตง · บะหมี่เย็น-เทมปุระ · ไข่หวาน · ปูอัด"],
+ ["Cutting / อื่นๆ","หมูย่างจิ้มแจ่ว · หมูย่างน้ำตก · พิซซ่า · เฟรนช์ฟราย · ข้าวสวย"],
+ ["ของหวาน","เค้กต่างๆ · ผลไม้ตามฤดูกาล · ขนมไทยชิ้น · ไอศครีม หรือ ขนมน้ำแข็งไส"]
+]};
+MENUDEFS["งานประชุม 500 บาท"]=DEF500;
+MENUDEFS["Meeting Set (เลือกรายการ)"]=DEF500;   /* ชื่อเดิม — ข้อมูลเก่ายังอ่านได้ */
+
+/* ---------- 2) งานประชุม 400 บาท ---------- */
+MENUDEFS["งานประชุม 400 บาท"]={groups:[
+ {k:"s4soup",l:"ซุป",max:1,items:["ซุปซี่โครงหมูตุ๋นยาจีน","ต้มแซ่บซี่โครงหมู","ต้มข่าไก่","ซุปครีมไก่+ขนมปัง+เนย","ซุปครีมเห็ด+ขนมปัง+เนย"]},
+ {k:"s4yum",l:"STARTER · ยำและลาบ + ของทอด (รวม 2 รายการ)",max:2,items:["ลาบหมู","ลาบไก่","ยำวุ้นเส้น","ยำไก่ย่าง","ยำใหญ่","ยำหมูย่าง","ยำหมูยอไข่ดาว","หอยจ๊อ","เฟรนช์ฟราย","เกี๊ยวกรอบ","ทอดมัน","ปอเปี๊ยะ"]},
+ {k:"s4salad",l:"MIXED SALAD",max:2,items:["สลัดผลไม้","มักกะโรนีสลัด","สลัดธัญพืช","สลัดมันฝรั่ง"]},
+ {k:"s4pad",l:"เมนูผัด",max:2,items:["ผัดพริกขิงไก่กรอบ","ผัดพริกขิงปลาดุกทอดกรอบ","กระเพราหมูสับใส่หมูกรอบ","กระเพราไก่","ผัดดอกกะหล่ำแฮม","ผัดผักสี่สหาย","ผัดผักกาดขาวลูกชิ้นกุ้ง/เต้าหู้","กะหล่ำปลีผัดแฮม/หมู/เต้าหู้","ผัดบร็อคโคลี่ซอสไข่กุ้ง","ผัดคะน้าหมูกรอบ","หมูสามชั้นผัดกะปิ","ผัดพริกแกงไก่/หมู/ลูกชิ้น-มะเขือยาว","ผัดสามเหม็น (สะตอ/ชะอม/กระเทียมดอง)","หน่อไม้ผัดไก่ใส่พริกเหลือง","ผัดพริกแกงหมูตุ๋น","เปรี้ยวหวานปลาทอด"]},
+ {k:"s4kaeng",l:"เมนูแกง",max:2,items:["สตูว์ไก่ / หมู","ต้มแซ่บซี่โครงหมูอ่อน","ต้มยำไก่ / ปลา","ปีกไก่ตุ๋นฟัก","ต้มจิ๋ว","บักกุ๊ดเต๋","มัสมั่นหมู / ไก่","แพนงไก่ / หมู","แกงคั่วสับปะรด","แกงเทโพหมูสามชั้น","แกงส้มมะละกอ/ผักรวม + กุ้ง/ปลาทอด","แกงไก่/หมู ใส่หน่อไม้","แกงกะหรี่ไก่ / หมู","แกงเขียวหวานไก่ / หมู / ลูกชิ้นปลา","แกงคั่วหน่อไม้ดอง ไก่ / กุ้ง / หอยแมลงภู่"]},
+ {k:"s4tod",l:"เมนูทอด / อบ",max:1,items:["ไก่ทอดจิ้มแจ่ว","หมูชิ้นทอดจิ้มแจ่ว","ไก่อบ","หมูอบ","ซี่โครงหมูอบ","ไก่กระเทียมแบบจีน","หมูกระเทียมแบบจีน","ทอดมันปลา","ทอดมันหมู","ทอดมันข้าวโพด","หมูปั้นก้อนทอด","ไก่ปั้นก้อนทอด","หมูย่างจิ้มแจ่ว"]},
+ {k:"s4prik",l:"เมนูน้ำพริกและเครื่องเคียง",max:1,items:["น้ำพริกกะปิ","น้ำพริกลงเรือ","น้ำพริกปลาป่น","หลนเต้าเจี้ยว","กะปิคั่ว","น้ำพริกอ่อง","น้ำพริกหมู / ไก่"]},
+ {k:"s4kn",l:"ซุ้มขนมจีน (เลือกน้ำยา 2)",max:2,items:["เขียวหวานลูกชิ้นปลากราย","น้ำยาป่า","น้ำยากะทิ","แกงไตปลา","แกงเขียวหวานไก่","น้ำพริก","น้ำเงี้ยว"]},
+ {k:"s4kuay",l:"ซุ้มก๋วยเตี๋ยว",max:1,items:["ก๋วยเตี๋ยวลูกชิ้นหมูน้ำใส","ก๋วยเตี๋ยวเย็นตาโฟ-สุกี้","ก๋วยเตี๋ยวต้มยำไข่หวาน","ก๋วยเตี๋ยวลูกชิ้นปลา","ก๋วยเตี๋ยวชาบูหมูน้ำตก","บะหมี่เกี๊ยว หมูแดง ลูกชิ้นปลา"]},
+ {k:"s4noodle",l:"ประเภทเส้น",max:1,items:["ผัดซีอิ๊ว","ผัดไทยกุ้งสด","ผัดหมี่ฮกเกี้ยน","มักกะโรนีผัดไส้กรอก","สปาเก็ตตี้ซอสไก่","สปาเก็ตตี้ผัดขี้เมา"]},
+ {k:"s4rice",l:"ประเภทข้าวผัด",max:1,items:["ข้าวผัดแฮม","ข้าวผัดหมูหยอง","ข้าวผัดไส้กรอก","ข้าวผัดไข่ผัก 3 สี"]},
+ {k:"s4dessert",l:"ของหวาน (เลือก 2)",max:2,items:["เค้กต่างๆ + ขนมไทยชิ้น","ผลไม้ตามฤดูกาล","ขนมไทยหม้อร้อน: ครองแครงกะทิ","ขนมไทยหม้อร้อน: ปลากริม","ขนมไทยหม้อร้อน: บัวลอย","ขนมไทยหม้อร้อน: กล้วยบวชชี","ไอศกรีม และ ขนมน้ำแข็งไส"]}
+],fixed:[
+ ["SALAD BAR","ผักสลัด · แครอทสไลด์ · มะเขือเทศเชอร์รี่ · ข้าวโพดต้ม · แตงกวา · ถั่วแดงต้ม · หอมใหญ่สไลด์ · ลูกเดือยต้ม"],
+ ["DRESSING","ซอสเธาซันไอแลนด์ · ซอสอิตาลี · ซอสหวาน"],
+ ["อื่นๆ","ข้าวสวย"]
+]};
+
+/* ---------- 3) Party Buffet A (50 ท่าน) ---------- */
+MENUDEFS["Party Buffet A (50 ท่าน)"]={groups:[
+ {k:"paSoup1",l:"SOUP 2.1 (เลือก 1)",max:1,items:["ซุปซี่โครงหมูตุ๋นยาจีน (บักกุ๊ดเต๋)","ต้มแซ่บซี่โครงหมู"]},
+ {k:"paSoup2",l:"SOUP 2.2 (เลือก 1)",max:1,items:["ซุปครีมข้าวโพด","ซุปเห็ดทรัฟเฟิล - ครัวซองต์"]},
+ {k:"paHot3",l:"HOT DISH 5.3 (เลือก 1)",max:1,items:["แกงมัสมั่นไก่","สตูว์ไก่แบบไทย"]},
+ {k:"paHot4",l:"HOT DISH 5.4 (เลือก 1)",max:1,items:["พะแนงหมูตุ๋น","ถั่วหวานผัดปลาหมึก"]},
+ {k:"paStation",l:"PREMIUM STATION (เลือก 1 ซุ้ม)",max:1,items:["ซุ้ม Cutting (หมูอบย่าง · พายปลา · ผักสามสี · มันอบชีส + ซอสแอปเปิ้ล/ทาร์ทาร์)","ซุ้มข้าวหน้าล้น (ข้าวคลุกน้ำปลาทะเล · ข้าวแซลมอนไข่ดอง · ข้าวไข่ข้นกุ้ง)"]},
+ {k:"paKnomjeen",l:"ซุ้มขนมจีน (เลือก 2)",max:2,items:["น้ำพริก","น้ำยากะทิ","ซาวน้ำ","แกงเขียวหวานลูกชิ้นปลากราย","แกงเขียวหวานไก่และตีนไก่"]},
+ {k:"paThaiDessert",l:"ขนมไทยหม้อร้อน (เลือก 3)",max:3,items:["บัวลอยเผือก","ครองแครงแก้ว","เต้าทึงเย็น","กล้วยบวชชี","ปลากริม"]}
+],fixed:[
+ ["BREAD CORNER","ขนมปังต่าง ๆ"],
+ ["APPETIZER","มันฝรั่งทอด · หอยจ๊อ · เกี๊ยวกรอบไส้หมู · ปอเปี๊ยะทอด · ลาบไก่ · ยำวุ้นเส้น · พิซซ่าหน้าไส้กรอกรวม/ผักรวม · กุ้งค็อกเทล + ซอสค็อกเทล"],
+ ["SALAD BAR",SALADBAR_TXT],["DRESSING",DRESSING_TXT],
+ ["HOT DISH (มาพร้อมชุด)","อกไก่ราดมัชรูมซอส · ปลากะพงทอดกับทาทาร์ซอส · ข้าวผัด · บะหมี่ฮกเกี้ยน"],
+ ["PASTA",PASTA_TXT],
+ ["DEMON","ผัดไทยกุ้งตะกาด · ก๋วยเตี๋ยวเย็นตาโฟ · ก๋วยเตี๋ยวต้มยำลูกชิ้นปลาไข่หวาน"],
+ ["JAPANESE",JPN_TXT],
+ ["ของหวาน","เค้กต่าง ๆ · ผลไม้ตามฤดูกาล · ขนมไทยชิ้น · ไอศกรีม · ขนมน้ำแข็งใส"]
+]};
+
+/* ---------- 4) Party Buffet B (100 ท่านขึ้นไป) ---------- */
+MENUDEFS["Party Buffet B (100 ท่านขึ้นไป)"]={groups:[
+ {k:"pbSoup",l:"SOUP (เลือก 2)",max:2,items:["ซุปซี่โครงหมูตุ๋นยาจีน (บักกุ๊ดเต๋)","ต้มแซ่บซี่โครงหมู","กระเพาะปลา","ต้มยำทะเล","ต้มข่าไก่","ซุปครีมข้าวโพด","ซุปเห็ดทรัฟเฟิล - ครัวซองต์"]},
+ {k:"pbApp1",l:"APPETIZER 3.1 (เลือก 1)",max:1,items:["มันฝรั่งทอด","เกี๊ยวกรอบไส้หมู"]},
+ {k:"pbApp3",l:"APPETIZER 3.3 (เลือก 1)",max:1,items:["ข้าวตังหน้าตั้ง","หอยจ๊อ"]},
+ {k:"pbApp4",l:"APPETIZER 3.4 (เลือก 1)",max:1,items:["ปอเปี๊ยะทอด","ทอดมัน"]},
+ {k:"pbApp6",l:"APPETIZER 3.6 (เลือก 1)",max:1,items:["ยำวุ้นเส้นทะเล, หมูยอ","ยำไข่ดาว, หมูยอ"]},
+ {k:"pbThai",l:"THAI HOT DISH (เลือก 2)",max:2,items:["แกงมัสมั่นไก่","สตูว์ไก่แบบไทย","พะแนงหมูตุ๋น","ถั่วหวานผัดปลาหมึก"]},
+ {k:"pbSea",l:"HOT DISH 5.6 (เลือก 1)",max:1,items:["ทะเลรวมผัดผงกะหรี่","ผัดฉ่าทะเล"]},
+ {k:"pbRice",l:"HOT DISH 5.7 · ข้าวผัด (เลือก 1)",max:1,items:["ข้าวผัดคะน้าปลาเค็ม","ข้าวผัดหยางโจว"]},
+ {k:"pbKnomjeen",l:"ซุ้มขนมจีน (เลือก 2)",max:2,items:["น้ำพริก","น้ำยากะทิ","ซาวน้ำกุ้งสับ","แกงเขียวหวานลูกชิ้นปลากราย","แกงเขียวหวานไก่และตีนไก่"]},
+ {k:"pbPrik",l:"ซุ้มน้ำพริก (เลือก 2)",max:2,items:["น้ำพริกกะปิ","น้ำพริกปลาป่น","หลนเต้าเจี้ยว","กะปิคั่ว","น้ำพริกลงเรือ","น้ำพริกหมู","น้ำพริกอ่อง"]},
+ {k:"pbStation",l:"PREMIUM STATION (เลือก 1 ซุ้ม)",max:1,items:["ซุ้ม Cutting (บีฟโรล · หมูอบย่าง · พายปลา · ผักสามสี · มันอบชีส · ออเนียนคาราเมลไลซ์) + ซุ้มข้าวหน้าล้น","ซุ้มอาหารทะเล (กุ้งแม่น้ำย่าง · กุ้งขาวลวก · ปลาหมึกย่าง · หอยแมลงภู่ลวก) + ซุ้มข้าวหน้าล้น"]},
+ {k:"pbDemon",l:"DEMON 10.2 (เลือก 1)",max:1,items:["ก๋วยเตี๋ยวชาบูน้ำตกหมู / เนื้อ","เป็ดย่าง-หมูกรอบ (บะหมี่/ข้าว) · เกี๊ยวกุ้ง · ต้มแซ่บเนื้อเป็ด · บะหมี่ปูหมูแดง"]},
+ {k:"pbThaiDessert",l:"ขนมไทยหม้อร้อน (เลือก 3)",max:3,items:["บัวลอยเผือก หรือ บวดเบญจรงค์","ครองแครงแก้ว","เต้าทึงเย็น","กล้วยบวชชี","ปลากริม"]}
+],fixed:[
+ ["BREAD CORNER","ขนมปังต่าง ๆ"],
+ ["APPETIZER (มาพร้อมชุด)","ลาบไก่ · พิซซ่าหน้าไส้กรอกรวม/ผักรวม · กุ้งค็อกเทล + ซอสค็อกเทล"],
+ ["SALAD BAR",SALADBAR_TXT],["DRESSING",DRESSING_TXT],
+ ["HOT DISH (มาพร้อมชุด)","ปลากะพงทอดราดซอสเลมอนแคปเปอร์ · หมูอบราดมัชรูมซอส · อกไก่อบราดฮันนี่มัสตาร์ด · กุ้งพริกเกลือ · บะหมี่ฮกเกี้ยน"],
+ ["PASTA",PASTA_TXT],
+ ["DEMON 10.1","ผัดไทยกุ้งกรอบ"],
+ ["JAPANESE",JPN_TXT],
+ ["ของหวาน","เค้กต่าง ๆ · ผลไม้ตามฤดูกาล · ขนมไทยชิ้น · ข้าวเหนียวมะม่วงทรงเครื่อง · ไอศกรีม · ขนมน้ำแข็งใส"]
+]};
+
+/* ---------- 5) Coffee Break A / B / C ---------- */
+MENUDEFS["Coffee Break A (2 อย่าง)"]={groups:[
+ {k:"cbaSav",l:"พัฟ / แซนวิช / ขนมปัง (เลือก 1)",max:1,items:CB_SAVOURY},
+ {k:"cbaSweet",l:"แยมโรล / ขนมไทยน้ำ / เค้ก (เลือก 1)",max:1,items:[...CB_ROLL,...CB_THAIWET,...CB_CAKE_A]}
+],fixed:[["เครื่องดื่ม","ชา / กาแฟ"]]};
+
+MENUDEFS["Coffee Break B (3 อย่าง)"]={groups:[
+ {k:"cbbSav",l:"พัฟ / แซนวิช / ขนมปัง (เลือก 1)",max:1,items:CB_SAVOURY},
+ {k:"cbbSweet",l:"แยมโรล / เค้ก (เลือก 1)",max:1,items:[...CB_ROLL,...CB_CAKE]},
+ {k:"cbbThai",l:"ขนมไทย / ผลไม้ (เลือก 1)",max:1,items:CB_THAIFRUIT}
+],fixed:[["เครื่องดื่ม","ชา / กาแฟ"]]};
+
+MENUDEFS["Coffee Break C (4 อย่าง)"]={groups:[
+ {k:"cbcSav",l:"พัฟ / แซนวิช / ขนมปัง (เลือก 2)",max:2,items:CB_SAVOURY},
+ {k:"cbcSweet",l:"แยมโรล / เค้ก (เลือก 1)",max:1,items:[...CB_ROLL,...CB_CAKE]},
+ {k:"cbcThai",l:"ขนมไทย / ผลไม้ (เลือก 1)",max:1,items:CB_THAIFRUIT}
+],fixed:[["เครื่องดื่ม","ชา / กาแฟ"]]};
+
+/* ชื่อเดิม "อาหารว่าง (เบรก)" — ข้อมูลเก่ายังอ่านได้ */
+MENUDEFS["อาหารว่าง (เบรก)"]={groups:[
+ {k:"brk",l:"รายการอาหารว่าง",max:99,items:[...new Set([...CB_SAVOURY,...CB_ROLL,...CB_CAKE,...CB_THAIWET,...CB_THAIFRUIT,
+   "แซนวิชไก่","แซนวิชแฮมชีส","แยมโรลวานิลา","วุ้น","พายสับปะรด","เค้กช็อกโกแลต","เอแคลร์","ผลไม้",
+   "บราวนี่","เดนิชอัลมอนด์","ขนมปังไส้กรอกไก่","เค้กท็อฟฟี่","วุ้นกะทิ","ขนมปังไส้เผือก","ขนมปังไส้มูหยอง",
+   "กะหรี่พัฟไก่","เค้กวานิลา","พัฟไก่","เค้กกล้วยหอม","ครัวซองค์ไส้แฮมไก่","แยมโรลมะนาว",
+   "ซอสเซสโรลแป้งพาย","อัพไซด์ดาวน์เค้ก","วุ้นผลไม้","บัวลอย","ชา / กาแฟ"])]}
+],fixed:[]};
+
+const SALADBAR = ["ผักสลัด","ถั่วแดงต้ม","ข้าวโพดต้ม","ลูกเดือยต้ม","มะเขือเทศเชอร์รี่","แตงกวา","หอมใหญ่สไลด์","แครอทสไลด์","กรูตอง (ขนมปังอบกรอบ)","ไข่ต้มสับ","เบคอนสับ"];
+const PIZZA = ["พิซซ่าหน้าไส้กรอกไก่","พิซซ่าหน้าผักรวม"];
+const JPN = ["บะหมี่เย็น + เทมปุระ","ข้าวห่อสร่าย / ข้าวห่อปูอัด / ข้าวห่อไข่หวาน","โชยุ · วาซาบิ · ขิงดอง"];
+const FRUIT = ["ผลไม้","พริกเกลือ"];
+
+const BUFFETS = {
+ "Buffet A":{
+  SOUP:["ต้มแซ่บซี่โครงหมู"], STARTER:["ยำถั่วพู"],
+  APPERTIZER:["เฟรนช์ฟราย","ข้าวตังหน้าตั้ง","ขนมปังหน้าหมู"],
+  "MIXED SALAD":["สลัดมันฝรั่ง","สลัดธัญพืช"], "SALAD BAR + DRESSING":SALADBAR,
+  "ซุ้มน้ำพริก":["น้ำพริกอ่อง","เครื่องเคียง"],
+  "HOT DISH":["ผัดวุ้นเส้นกระเพราไก่","ผักกาดตุ๋นเห็ดหอม","แกงเขียวหวานลูกชิ้นปลามะเขือยาว","ไก่ปั้นก้อนทอด","ไข่ตุ๋น (เป็นถ้วยๆ)","ข้าวผัดไส้กรอก","ข้าวสวย"],
+  "ซุ้มขนมจีน":["เส้นขนมจีน","น้ำยากะทิ","เครื่องเคียง"],
+  PASTA:["สปาเก็ตตี้ผัดขี้เมา"], "FRIED NOODLES":["ผัดหมี่ฮกเกี้ยน"],
+  "ซุ้มก๋วยเตี๋ยว":["ก๋วยเตี๋ยวต้มยำไข่หวาน"], CUTTING:["ไก่ม้วน"],
+  PIZZA:PIZZA, JAPANESE:JPN, "ผลไม้ตามฤดูกาล":FRUIT,
+  DESSERT:["ขนมไทยชิ้น","เค้กต่างๆ","ไอศครีม + Topping","ลูกเดือย-ถั่วแดงเปียก"]
+ },
+ "Buffet B":{
+  SOUP:["ต้มยำน้ำใสปลากระพง + เห็ด"], STARTER:["ยำหมูย่าง"],
+  APPERTIZER:["เฟรนช์ฟราย","ปอเปี๊ยะ","เกี๊ยวกรอบซอสซัลซ่า"],
+  "MIXED SALAD":["สลัดผลไม้","สลัดมันฝรั่ง"], "SALAD BAR + DRESSING":SALADBAR,
+  "ซุ้มน้ำพริก":["น้ำพริกลงเรือ","เครื่องเคียง"],
+  "HOT DISH":["แกงไก่มะเขือยาว","ผัดดอกกระหล่ำแฮม","มัสมั่นไก่","หมูย่างจิ้มแจ่ว","ไข่ลูกเขย","ข้าวผัดหยางโจว","ข้าวสวย"],
+  "ซุ้มขนมจีน":["เส้นขนมจีน","น้ำยาป่า","เครื่องเคียง"],
+  PASTA:["สปาเก็ตตี้ซอสไก่"], "FRIED NOODLES":["ผัดไทยกุ้งสด"],
+  "ซุ้มก๋วยเตี๋ยว":["ก๋วยเตี๋ยวเย็นตาโฟ"], CUTTING:["หมูม้วน"],
+  PIZZA:PIZZA, JAPANESE:JPN, "ผลไม้ตามฤดูกาล":FRUIT,
+  DESSERT:["ขนมไทยชิ้น","เค้กต่างๆ","ขนมน้ำแข็งใส","ปลากริม"]
+ },
+ "Buffet C":{
+  SOUP:["ต้มข่าไก่"], STARTER:["ยำวุ้นเส้นโบราณ"],
+  APPERTIZER:["เฟรนช์ฟราย","ทอดมัน","เกี๊ยวกรอบซอสซัลซ่า"],
+  "MIXED SALAD":["สลัดผลไม้","สลัดมันฝรั่ง"], "SALAD BAR + DRESSING":SALADBAR,
+  "ซุ้มน้ำพริก":["น้ำพริกปลาป่น","เครื่องเคียง"],
+  "HOT DISH":["ผัดเปรี้ยวหวานปลาทอด","ผัดผักสี่สหาย","แพนงไก่","ไก่อบ (แครอท+มัน+หอมใหญ่)","ไข่เจียวทรงเครื่อง (โรล)","ข้าวผัดไส้กรอก","ข้าวสวย"],
+  "ซุ้มขนมจีน":["เส้นขนมจีน","ซาวน้ำ","เครื่องเคียง"],
+  PASTA:["สปาเก็ตตี้คาโบนาร่า"], "FRIED NOODLES":["ผัดหมี่ฮกเกี้ยน"],
+  "ซุ้มก๋วยเตี๋ยว":["ก๋วยเตี๋ยวต้มยำไข่หวาน"], CUTTING:["หมูสันนอก"],
+  PIZZA:PIZZA, JAPANESE:JPN, "ผลไม้ตามฤดูกาล":FRUIT,
+  DESSERT:["ขนมไทยชิ้น","เค้กต่างๆ","ไอศครีม + Topping","กล้วยบวชี"]
+ },
+ "Buffet D":{
+  SOUP:["กระเพาะปลา"], STARTER:["ยำไก่ย่าง"],
+  APPERTIZER:["เฟรนช์ฟราย","ข้าวตังหน้าตั้ง","ขนมปังหน้าหมู","อาจาด"],
+  "MIXED SALAD":["สลัดธัญพืช","สลัดผลไม้"], "SALAD BAR + DRESSING":SALADBAR,
+  "ซุ้มน้ำพริก":["หลนเต้าเจี้ยว","เครื่องเคียง"],
+  "HOT DISH":["ผัดผักกาดขาวเต้าหู้","กระเพราไก่","แกงคั่วสับปะรด","หมูเส้นทอด","ไข่พะโล้","ข้าวผัดไข่ผัก 3 สี","ข้าวสวย"],
+  "ซุ้มขนมจีน":["เส้นขนมจีน","น้ำยากะทิ","เครื่องเคียง"],
+  PASTA:["สปาเก็ตตี้ซอสไก่"], "FRIED NOODLES":["มักกะโรนีผัดไส้กรอก"],
+  "ซุ้มก๋วยเตี๋ยว":["ก๋วยเตี๋ยวลูกชิ้นหมู+หมูสับน้ำใส"], CUTTING:["ไก่ตัวย่างสมุนไพร"],
+  PIZZA:PIZZA, JAPANESE:JPN, "ผลไม้ตามฤดูกาล":FRUIT,
+  DESSERT:["ขนมไทยชิ้น","เค้กต่างๆ","ขนมน้ำแข็งใส","บัวลอยเผือก"]
+ },
+ "Buffet F":{
+  "BREAD CORNER":["ขนมปังซอฟท์โรล+ขนมปังฮาร์ดโรล","เนย"],
+  SOUP:["ซุปฟักทอง"], STARTER:["ยำมันม่าทะเล"],
+  APPERTIZER:["เฟรนช์ฟราย","เต้าหู้ทอด","โซเท้าทอด"],
+  "MIXED SALAD":["สลัดธัญพืช","สลัดผลไม้"], "SALAD BAR + DRESSING":SALADBAR,
+  "ซุ้มน้ำพริก":["น้ำพริกอ่อง","เครื่องเคียง"],
+  "HOT DISH":["ผัดบร็อคโคลี่ซอสไข่กุ้ง","ผัดพริกแกงหมูตุ๋น","แกงส้มผักรวม+กุ้ง","ไก่ทอดกระเทียม","ยำไข่ต้ม","ข้าวผัดหยางโจว","ข้าวสวย"],
+  "ซุ้มขนมจีน":["เส้นขนมจีน","น้ำเงี้ยว","เครื่องเคียง"],
+  PASTA:["สปาเก็ตตี้คาโบนาร่า"], "FRIED NOODLES":["ผัดไทยกุ้งสด"],
+  "ซุ้มก๋วยเตี๋ยว":["ก๋วยเตี๋ยวชาบูหมูน้ำตก"], CUTTING:["พาสเนื้อบด"],
+  PIZZA:PIZZA, JAPANESE:JPN, "ผลไม้ตามฤดูกาล":FRUIT,
+  DESSERT:["ขนมไทยชิ้น","เค้กต่างๆ","ขนมน้ำแข็งใส","ลอดช่องน้ำกะทิ"]
+ }
+};
+
+/* อาหารว่าง (เบรก) — จากตัวอย่างใน BEO */
+
+
+/* ================= state ================= */
+let DB=null, ASSETS=null, SAMPLE=null, SCANCTL=null, ITEMS=[], HOTEL="qsl", CUR=null, READONLY=false;
+let LOGOS={};
+let VIEW="all", MYDEPT="banquet", MODE="view";
+try{ const v=localStorage.getItem("bqView"); if(v) VIEW=v;
+     const d=localStorage.getItem("bqDept"); if(d) MYDEPT=d; }catch(e){}
+const $ = s => document.querySelector(s);
+
+/* theme */
+$("#themeBtn").onclick = ()=>{
+  const cur = document.documentElement.getAttribute("data-theme");
+  const next = cur==="dark" ? "light" : cur==="light" ? "" : "dark";
+  next ? document.documentElement.setAttribute("data-theme",next)
+       : document.documentElement.removeAttribute("data-theme");
+  try{ localStorage.setItem("bqTheme", next); }catch(e){}
+};
+try{ const t=localStorage.getItem("bqTheme"); if(t) document.documentElement.setAttribute("data-theme",t); }catch(e){}
+
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("on"); setTimeout(()=>t.classList.remove("on"),1900); }
+
+/* ---- งานตามแผนก ---- */
+function taskList(f,k){
+  const v=(f.depts||{})[k];
+  if(Array.isArray(v)) return v;
+  if(typeof v==="string" && v.trim())
+    return v.split(/\r?\n/).map(x=>x.trim()).filter(Boolean).map(t=>({t:t,done:false,who:""}));
+  return [];
+}
+function ensureArr(f,k){ f.depts=f.depts||{}; if(!Array.isArray(f.depts[k])) f.depts[k]=taskList(f,k); return f.depts[k]; }
+function deptStats(f){ let d=0,t=0; DEPTS.forEach(x=>taskList(f,x.k).forEach(i=>{t++; if(i.done)d++;})); return {d,t}; }
+function deptName(k){ const x=DEPTS.find(d=>d.k===k); return x?x.l:k; }
+
+/* ---- logo ---- */
+function logoHTML(hk,cls){
+  const h=HOTELS[hk]||HOTELS.qsl;
+  const inner = LOGOS[hk]
+    ? `<img src="${esc(LOGOS[hk])}" alt="${esc(h.short)}">`
+    : (hk==="bys"?LOGO_B:LOGO_Q);
+  return `<span class="${cls||""}" style="color:${h.color};display:flex;align-items:center">${inner}</span>`;
+}
+function drawBrand(){
+  const h=HOTELS[HOTEL];
+  document.documentElement.style.setProperty("--brand",h.color);
+  $("#logoBox").innerHTML=logoHTML(HOTEL);
+  $("#strip").style.background=h.color;
+}
+
+/* hotel tabs */
+function drawTabs(){
+  $("#hotelTabs").innerHTML = HOTEL_ORDER.map(k=>
+    `<button data-h="${k}" aria-pressed="${k===HOTEL}">${esc(HOTELS[k].short)}</button>`).join("");
+  $("#hotelTabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+    HOTEL=b.dataset.h; try{localStorage.setItem("bqHotel",HOTEL);}catch(e){} drawTabs(); drawBrand(); render();
+  });
+}
+try{ const h=localStorage.getItem("bqHotel"); if(h && HOTELS[h]) HOTEL=h; }catch(e){}
+
+function drawView(){
+  $("#viewSw").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.v===VIEW));
+  $("#deptRow").style.display = VIEW==="dept" ? "flex" : "none";
+  $("#hotelTabs").style.display = VIEW==="report" ? "none" : "flex";
+  $("#addBtn").style.display = (VIEW==="report"||!isAdmin()) ? "none" : "block";
+  $("#scanBtn").style.display = (VIEW==="report"||!isAdmin()) ? "none" : "block";
+  $("#myDept").innerHTML = DEPTS.map(d=>`<option value="${d.k}"${d.k===MYDEPT?" selected":""}>${esc(d.l)}</option>`).join("");
+}
+$("#viewSw").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+  VIEW=b.dataset.v; try{localStorage.setItem("bqView",VIEW);}catch(e){} drawView(); render();
+});
+$("#myDept").onchange=e=>{ MYDEPT=e.target.value; try{localStorage.setItem("bqDept",MYDEPT);}catch(e){} render(); };
+
+/* month filter options */
+(function(){
+  const sel=$("#fMonth"); const now=new Date();
+  let html='<option value="">ทุกเดือน</option>';
+  for(let i=-6;i<=12;i++){
+    const d=new Date(now.getFullYear(), now.getMonth()+i, 1);
+    const v=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+    const label=d.toLocaleDateString("th-TH",{month:"short",year:"numeric"});
+    html+=`<option value="${v}"${i===0?" selected":""}>${label}</option>`;
+  }
+  sel.innerHTML=html;
+})();
+
+/* ================= totals ================= */
+function sessTotal(s){ return (Number(s.price)||0)*(Number(s.pax)||0)*(Number(s.qty)||0); }
+function funcTotal(f){ return (f.sessions||[]).reduce((a,s)=>a+sessTotal(s),0); }
+
+/* ================= db ================= */
+/* ================= ชั้นข้อมูล : Supabase ================= */
+let SB=null;
+const CFG_OK = ()=> typeof APP_CONFIG!=="undefined" && APP_CONFIG.supabaseUrl && APP_CONFIG.supabaseAnonKey
+  && !APP_CONFIG.supabaseUrl.includes("ใส่");
+
+async function sbLoadAll(){
+  const [fn,st] = await Promise.all([
+    SB.from("functions").select("id,data"),
+    SB.from("settings").select("id,data")
+  ]);
+  if(fn.error) throw fn.error;
+  ITEMS = (fn.data||[]).map(r=>({id:r.id, ...(r.data||{})}));
+  const S={}; (st.data||[]).forEach(r=>S[r.id]=r.data||{});
+  return S;
+}
+async function sbSaveFunction(id,body){
+  const row={id:id||("f"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)),
+             data:body, updated_at:new Date().toISOString()};
+  const {error}=await SB.from("functions").upsert(row);
+  if(error) throw error;
+  return row.id;
+}
+async function sbDeleteFunction(id){
+  const {error}=await SB.from("functions").delete().eq("id",id);
+  if(error) throw error;
+}
+async function sbSaveSetting(key,obj){
+  const {error}=await SB.from("settings").upsert({id:key,data:obj,updated_at:new Date().toISOString()});
+  if(error) throw error;
+}
+async function sbUpload(file){
+  const ext=(file.name.split(".").pop()||"bin").toLowerCase();
+  const path=Date.now().toString(36)+Math.random().toString(36).slice(2,8)+"."+ext;
+  const {error}=await SB.storage.from("files").upload(path,file,{upsert:false,contentType:file.type});
+  if(error) throw error;
+  return SB.storage.from("files").getPublicUrl(path).data.publicUrl;
+}
+async function askBEO(files,prompt){
+  const url=(APP_CONFIG.beoFunctionUrl||"").trim();
+  if(!url) throw {code:"not_configured"};
+  const fd=new FormData();
+  fd.append("prompt",prompt);
+  files.forEach((f,i)=>fd.append("image"+i,f));
+  const r=await fetch(url,{method:"POST",headers:{Authorization:"Bearer "+APP_CONFIG.supabaseAnonKey},body:fd});
+  if(!r.ok) throw {code:"http_"+r.status};
+  return await r.json();
+}
+
+async function boot(){
+  drawTabs(); drawBrand(); drawView(); applyRole(); render();
+  if(!CFG_OK()){
+    $("#warn").innerHTML='<div class="banner">ยังไม่ได้ตั้งค่า Supabase — เปิดไฟล์ <b>config.js</b> แล้วใส่ Project URL กับ anon key</div>';
+    READONLY=true; GATED=true; applyRole(); return;
+  }
+  SB = supabase.createClient(APP_CONFIG.supabaseUrl, APP_CONFIG.supabaseAnonKey);
+  DB = true; ASSETS = true;
+  SAMPLE = !!(APP_CONFIG.beoFunctionUrl||"").trim();
+
+  async function refresh(){
+    try{
+      const S = await sbLoadAll();
+      LOGOS = S.logos || {};
+      CFG   = S.config || {};
+      applyCfg(CFG);
+      if(S.depts && Array.isArray(S.depts.list) && S.depts.list.length) DEPTS=S.depts.list;
+      if(!DEPTS.some(x=>x.k===MYDEPT)) MYDEPT=DEPTS[0].k;
+      if(!GATED){ GATED=true;
+        const need=(CFG.adminCode||CFG.staffCode);
+        if(need && !localStorage.getItem("bqRole")) showGate();
+        else if(!need && !localStorage.getItem("bqRole")) ROLE="admin";
+      }
+      drawTabs(); drawBrand(); drawView(); applyRole(); render();
+      if($("#sheet").classList.contains("on") && CUR && CUR.id){
+        const fresh=ITEMS.find(x=>x.id===CUR.id);
+        if(fresh && MODE==="view"){ CUR=JSON.parse(JSON.stringify(fresh)); drawSheet(); }
+      }
+    }catch(e){
+      $("#warn").innerHTML='<div class="banner">เชื่อมต่อฐานข้อมูลไม่ได้: '+esc(e.message||e.code||"error")+'</div>';
+    }
+  }
+  await refresh();
+  SB.channel("all").on("postgres_changes",{event:"*",schema:"public"},()=>refresh()).subscribe();
+  setInterval(refresh, 60000);
+}
+
+
+/* ================= list ================= */
+function filtered(){
+  const q=$("#q").value.trim().toLowerCase(), m=$("#fMonth").value, st=$("#fStatus").value;
+  return ITEMS.filter(f=>{
+    if(f.hotel!==HOTEL) return false;
+    if(st && f.status!==st) return false;
+    if(m && !(f.dateFrom||"").startsWith(m)) return false;
+    if(q){
+      const hay=((f.company||"")+" "+(f.funcNo||"")+" "+(f.eventName||"")+" "+(f.contact||"")).toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  }).sort((a,b)=>(a.dateFrom||"").localeCompare(b.dateFrom||""));
+}
+function dparts(iso){
+  if(!iso) return {d:"–",m:""};
+  const dt=new Date(iso+"T00:00:00");
+  if(isNaN(dt)) return {d:"–",m:""};
+  return {d:dt.getDate(), m:dt.toLocaleDateString("th-TH",{month:"short"})};
+}
+function rangeText(f){
+  if(!f.dateFrom) return "–";
+  const a=new Date(f.dateFrom+"T00:00:00");
+  const s=a.toLocaleDateString("th-TH",{day:"numeric",month:"short",year:"2-digit"});
+  if(!f.dateTo||f.dateTo===f.dateFrom) return s;
+  const b=new Date(f.dateTo+"T00:00:00");
+  return a.getDate()+"–"+b.toLocaleDateString("th-TH",{day:"numeric",month:"short",year:"2-digit"});
+}
+function tagCls(s){ return "t-"+String(s||"Draft").toLowerCase(); }
+
+function daysFromToday(iso){
+  if(!iso) return 9999;
+  const a=new Date(iso+"T00:00:00"), t=new Date(); t.setHours(0,0,0,0);
+  return Math.round((a-t)/86400000);
+}
+function render(){
+  const rows=filtered();
+  const total=rows.reduce((a,f)=>a+funcTotal(f),0);
+  const week=rows.filter(f=>{const d=daysFromToday(f.dateFrom); return d>=0&&d<=6;});
+  const tmr=rows.filter(f=>daysFromToday(f.dateFrom)===1);
+  const notDone=rows.filter(f=>{const st=deptStats(f); return st.t>0 && st.d<st.t;});
+  if(VIEW==="report"){ renderReport(); return; }
+  $("#summary").innerHTML=`
+    <div class="stat"><div class="k">งานทั้งหมด</div><div class="v">${rows.length}</div></div>
+    <div class="stat"><div class="k">ใน 7 วันนี้</div><div class="v">${week.length}</div></div>
+    <div class="stat"><div class="k">ยังทำไม่ครบ</div><div class="v">${notDone.length}</div></div>
+    <div class="stat desk"><div class="k">พรุ่งนี้</div><div class="v">${tmr.length}</div></div>`;
+
+  if(VIEW==="dept"){ renderDept(rows); return; }
+
+  if(!rows.length){ $("#list").innerHTML='<div class="empty">ยังไม่มีงานในเงื่อนไขนี้<br>กด “+ เพิ่มงาน” เพื่อเริ่ม</div>'; return; }
+
+  const cards = rows.map(f=>{
+    const p=dparts(f.dateFrom);
+    return `<div class="card mob" role="button" tabindex="0" data-id="${f.id}">
+      <div class="r1">
+        <div class="date">${p.d}<small>${p.m}</small></div>
+        <div class="co"><b>${esc(f.company||"(ไม่ระบุชื่อ)")}</b>
+          <span>${esc(f.eventName||f.funcNo||"")}</span>
+          <span>${esc(rangeText(f))} · ${esc((f.sessions||[])[0]?.room||"")}</span></div>
+      </div>
+      <div class="r2">
+        <span class="tag ${tagCls(f.status)}">${esc(f.status||"Draft")}</span>
+        ${f.kind&&f.kind!==KINDS[0]?`<span class="pill">${esc(f.kind)}</span>`:""}
+        <span class="pill">${nf(maxPax(f))} pax</span>
+        ${(f.files||[]).length?`<span class="pill">📎${f.files.length}</span>`:""}
+        <span class="amt">${nf(funcTotal(f))}</span>
+      </div></div>`;
+  }).join("");
+
+  const table = `<div class="desk"><table class="grid"><thead><tr>
+      <th style="width:120px">วันที่</th><th>ลูกค้า / งาน</th><th style="width:120px">Function No.</th>
+      <th style="width:150px">ห้อง</th><th class="num" style="width:70px">Pax</th>
+      <th style="width:95px">สถานะ</th><th class="num" style="width:110px">ยอดรวม</th>
+    </tr></thead><tbody>${rows.map(f=>`<tr data-id="${f.id}">
+      <td>${esc(rangeText(f))}</td>
+      <td><b>${esc(f.company||"(ไม่ระบุชื่อ)")}</b><br><span style="color:var(--ink-2);font-size:12.5px">${esc(f.eventName||"")}</span></td>
+      <td>${esc(f.funcNo||"")}</td>
+      <td>${esc((f.sessions||[])[0]?.room||"")}</td>
+      <td class="num">${nf(maxPax(f))}</td>
+      <td><span class="tag ${tagCls(f.status)}">${esc(f.status||"Draft")}</span></td>
+      <td class="num"><b>${nf(funcTotal(f))}</b></td></tr>`).join("")}</tbody></table></div>`;
+
+  $("#list").innerHTML = cards + table;
+  $("#list").querySelectorAll("[data-id]").forEach(el=>el.onclick=()=>openJob(ITEMS.find(x=>x.id===el.dataset.id)));
+}
+function bar(label,val,max,extra){
+  const pc=max>0?Math.round(val/max*100):0;
+  return `<div class="br"><span class="bl" title="${esc(label)}">${esc(label)}</span>
+    <span class="bb"><i style="width:${pc}%"></i></span>
+    <span class="bv">${extra||nf(val)}</span></div>`;
+}
+function reportRows(){
+  const m=$("#fMonth").value, st=$("#fStatus").value, q=$("#q").value.trim().toLowerCase();
+  return ITEMS.filter(f=>{
+    if(st && f.status!==st) return false;
+    if(m && !(f.dateFrom||"").startsWith(m)) return false;
+    if(q){ const hay=((f.company||"")+" "+(f.funcNo||"")+" "+(f.eventName||"")).toLowerCase();
+      if(!hay.includes(q)) return false; }
+    return true;
+  }).sort((a,b)=>(a.dateFrom||"").localeCompare(b.dateFrom||""));
+}
+function renderReport(){
+  const rows=reportRows();
+  const tot=rows.reduce((a,f)=>a+funcTotal(f),0);
+  const conf=rows.filter(f=>f.status==="Final"||f.status==="Confirm");
+  $("#summary").innerHTML=`
+    <div class="stat"><div class="k">งานทั้งหมด</div><div class="v">${rows.length}</div></div>
+    <div class="stat"><div class="k">รายได้รวม</div><div class="v">${nf(tot)}</div></div>
+    <div class="stat"><div class="k">เฉลี่ยต่องาน</div><div class="v">${nf(rows.length?Math.round(tot/rows.length):0)}</div></div>
+    <div class="stat desk"><div class="k">ยืนยันแล้ว</div><div class="v">${conf.length}</div></div>`;
+
+  if(!rows.length){ $("#list").innerHTML='<div class="empty">ไม่มีข้อมูลในเงื่อนไขนี้</div>'; return; }
+
+  /* --- รายได้แยกโรงแรม --- */
+  const byHotel={}; rows.forEach(f=>{ const k=f.hotel||"qsl";
+    byHotel[k]=byHotel[k]||{n:0,v:0}; byHotel[k].n++; byHotel[k].v+=funcTotal(f); });
+  const hMax=Math.max(1,...Object.values(byHotel).map(x=>x.v));
+  const hotelHTML=Object.entries(byHotel).sort((a,b)=>b[1].v-a[1].v)
+    .map(([k,x])=>bar((HOTELS[k]||{short:k}).short+" ("+x.n+" งาน)",x.v,hMax)).join("");
+
+  /* --- ประเภทงาน --- */
+  const byKind={}; rows.forEach(f=>{ const k=f.kind||KINDS[0];
+    byKind[k]=byKind[k]||{n:0,v:0}; byKind[k].n++; byKind[k].v+=funcTotal(f); });
+  const kArr=Object.entries(byKind).sort((a,b)=>b[1].n-a[1].n);
+  const kMaxN=Math.max(1,...kArr.map(x=>x[1].n));
+  const kindHTML=kArr.map(([k,x])=>bar(k,x.n,kMaxN,x.n+" งาน · "+nf(x.v))).join("");
+
+  /* --- รายได้แยกประเภทรายการ --- */
+  const byType={}; rows.forEach(f=>(f.sessions||[]).forEach(x=>{
+    const k=x.type||"อื่นๆ"; byType[k]=(byType[k]||0)+sessTotal(x); }));
+  const tArr=Object.entries(byType).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);
+  const tMax=Math.max(1,...tArr.map(x=>x[1]));
+  const typeHTML=tArr.map(([k,v])=>bar(k,v,tMax,nf(v)+"  ("+Math.round(v/tot*100)+"%)")).join("");
+
+  /* --- เมนูยอดนิยม --- */
+  const dish={}, sets={};
+  rows.forEach(f=>(f.menus||[]).forEach(m=>{
+    if(m.set) sets[m.set]=(sets[m.set]||0)+1;
+    const p=m.picks||{};
+    Object.keys(p).forEach(g=>{ if(g==="brk"||g.startsWith("cb")) return;
+      (p[g]||[]).forEach(d=>{ dish[d]=(dish[d]||0)+1; }); });
+  }));
+  const dArr=Object.entries(dish).sort((a,b)=>b[1]-a[1]).slice(0,15);
+  const dMax=Math.max(1,...dArr.map(x=>x[1]));
+  const dishHTML=dArr.length?dArr.map(([k,v])=>bar(k,v,dMax,v+" ครั้ง")).join("")
+    :'<div style="font-size:12.5px;color:var(--ink-2)">ยังไม่มีการติ๊กเมนูในงานช่วงนี้</div>';
+
+  /* --- อาหารว่าง --- */
+  const brk={};
+  rows.forEach(f=>(f.menus||[]).forEach(m=>{ const p=m.picks||{};
+    Object.keys(p).forEach(g=>{ if(g!=="brk" && !g.startsWith("cb")) return;
+      (p[g]||[]).forEach(d=>{ brk[d]=(brk[d]||0)+1; }); }); }));
+  const bArr=Object.entries(brk).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const bMax=Math.max(1,...bArr.map(x=>x[1]));
+  const brkHTML=bArr.length?bArr.map(([k,v])=>bar(k,v,bMax,v+" ครั้ง")).join(""):"";
+
+  /* --- ชุดเมนู --- */
+  const sArr=Object.entries(sets).sort((a,b)=>b[1]-a[1]);
+  const sMax=Math.max(1,...sArr.map(x=>x[1]));
+  const setHTML=sArr.map(([k,v])=>bar(k,v,sMax,v+" มื้อ")).join("");
+
+  /* --- ห้องที่ใช้ --- */
+  const room={}; rows.forEach(f=>{ const r=(f.sessions||[])[0]?.room; if(r) room[r]=(room[r]||0)+1; });
+  const rArr=Object.entries(room).sort((a,b)=>b[1]-a[1]);
+  const rMax=Math.max(1,...rArr.map(x=>x[1]));
+  const roomHTML=rArr.map(([k,v])=>bar(k,v,rMax,v+" งาน")).join("");
+
+  /* --- ตารางงาน --- */
+  const tableHTML=`<table class="rtab"><thead><tr><th>วันที่</th><th>ลูกค้า</th><th>ประเภท</th>
+    <th>โรงแรม</th><th class="n">Pax</th><th class="n">ยอด</th></tr></thead><tbody>
+    ${rows.map(f=>`<tr><td>${esc(rangeText(f))}</td>
+      <td>${esc(f.company||"(ไม่ระบุ)")}<br><span style="color:var(--ink-2)">${esc(f.eventName||"")}</span></td>
+      <td>${esc(f.kind||KINDS[0])}</td><td>${esc((HOTELS[f.hotel]||{short:""}).short)}</td>
+      <td class="n">${nf(maxPax(f))}</td><td class="n">${nf(funcTotal(f))}</td></tr>`).join("")}
+    <tr><td colspan="5"><b>รวม</b></td><td class="n"><b>${nf(tot)}</b></td></tr>
+    </tbody></table>`;
+
+  $("#list").innerHTML=`<div class="rep">
+    <div class="sec"><div class="secbody"><h3>รายได้แยกโรงแรม</h3>
+      <div class="hint">รายงานรวมทั้ง 2 โรงแรมเสมอ ไม่ขึ้นกับแท็บที่เลือก</div>${hotelHTML}</div></div>
+    <div class="sec"><div class="secbody"><h3>ประเภทงาน</h3>
+      <div class="hint">เรียงตามจำนวนงาน</div>${kindHTML}</div></div>
+    <div class="sec"><div class="secbody"><h3>รายได้แยกประเภทรายการ</h3>
+      <div class="hint">อาหาร ค่าเช่าห้อง อุปกรณ์ ฯลฯ</div>${typeHTML}</div></div>
+    <div class="sec"><div class="secbody"><h3>เมนูอาหารที่ลูกค้าเลือกบ่อย</h3>
+      <div class="hint">นับจากรายการที่ติ๊กในเมนูงานประชุม (15 อันดับแรก)</div>${dishHTML}</div></div>
+    ${brkHTML?`<div class="sec"><div class="secbody"><h3>อาหารว่างที่ใช้บ่อย</h3>${brkHTML}</div></div>`:""}
+    ${setHTML?`<div class="sec"><div class="secbody"><h3>ชุดเมนูที่ใช้บ่อย</h3>${setHTML}</div></div>`:""}
+    ${roomHTML?`<div class="sec"><div class="secbody"><h3>ห้องที่ใช้บ่อย</h3>${roomHTML}</div></div>`:""}
+    <div class="sec"><div class="secbody"><h3>รายการงานทั้งหมด</h3>
+      <div style="overflow-x:auto">${tableHTML}</div></div></div>
+    <button class="btn" id="repPrint" style="width:100%;margin-top:6px">พิมพ์ / บันทึกเป็น PDF</button>
+    <div style="height:24px"></div></div>`;
+  document.getElementById("repPrint").onclick=()=>window.print();
+}
+function renderDept(rows){
+  const dk=MYDEPT;
+  if(!rows.length){ $("#list").innerHTML='<div class="empty">ไม่มีงานในเงื่อนไขนี้</div>'; return; }
+  $("#list").innerHTML = rows.map(f=>{
+    const arr=taskList(f,dk);
+    const s0=(f.sessions||[])[0]||{};
+    const menuLine = dk==="chef" && (f.menus||[]).length
+      ? `<div class="tl"><span style="color:var(--ink-2)">เมนู: ${esc((f.menus||[]).map(m=>(m.date||"")+" "+(m.set||"")).join(" · "))}</span></div>` : "";
+    return `<div class="dcard">
+      <div class="dh" data-id="${f.id}">
+        <div class="date" style="background:var(--accent-soft);color:var(--accent);border-radius:9px;padding:6px 9px;text-align:center;min-width:56px;font-weight:700;line-height:1.15">${dparts(f.dateFrom).d}<small style="display:block;font-size:10px">${dparts(f.dateFrom).m}</small></div>
+        <div class="co"><b>${esc(f.company||"(ไม่ระบุชื่อ)")}</b>
+          <span>${esc(rangeText(f))} · ${esc(s0.time||"")}</span>
+          <span>${esc(s0.room||"")} · ${nf(maxPax(f))} ท่าน</span></div>
+        <span class="tag ${tagCls(f.status)}">${esc(f.status||"Draft")}</span>
+      </div>
+      ${(()=>{const fl=(f.files||[]).filter(x=>!x.dept||x.dept===dk);
+        return fl.length?`<div class="dthumbs">${fl.map(x=>
+          `<a href="${esc(x.url)}" data-zoom="${esc(x.url)}" data-zname="${esc(x.tag||x.name)}" title="${esc(x.tag||x.name)}">
+            ${(x.mime||"").startsWith("image/")?`<img src="${esc(x.url)}" alt="${esc(x.name)}">`
+              :`<div style="height:56px;display:flex;align-items:center;justify-content:center;font-size:20px">📄</div>`}
+            <span style="display:block;font-size:10px;padding:3px 4px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(x.tag||x.name)}</span></a>`
+        ).join("")}</div>`:"";})()}
+      ${(f.rundown||[]).length?`<details style="margin:2px 0 6px"><summary style="font-size:12.5px;color:var(--accent);cursor:pointer">กำหนดการ ${f.rundown.length} รายการ</summary>
+        ${f.rundown.map(r=>`<div class="rd"><b>${esc(r.time||"")}</b><span>${esc(r.item||"")}</span>${r.who?`<small>${esc(r.who)}</small>`:""}</div>`).join("")}</details>`:""}
+      ${menuLine}
+      ${arr.length ? arr.map((x,i)=>`<div class="tl ${x.done?"done":""}">
+          <button class="tick" data-fid="${f.id}" data-dk="${dk}" data-ti="${i}" aria-pressed="${!!x.done}">✓</button>
+          <span style="flex:1">${esc(x.t)}</span>
+          ${x.who?`<small>${esc(x.who)}</small>`:""}
+        </div>`).join("")
+        : '<div class="nomore">ยังไม่มีงานมอบหมายให้แผนกนี้</div>'}
+    </div>`;
+  }).join("");
+
+  bindZoom($("#list"));
+  $("#list").querySelectorAll(".dh[data-id]").forEach(el=>el.onclick=()=>openJob(ITEMS.find(x=>x.id===el.dataset.id)));
+  $("#list").querySelectorAll(".tick[data-fid]").forEach(b=>{ if(!canTick()){ b.disabled=true; b.style.opacity=.45; return; } b.onclick=async()=>{
+    const f=ITEMS.find(x=>x.id===b.dataset.fid); if(!f||!DB) return;
+    const copy=JSON.parse(JSON.stringify(f));
+    const arr=ensureArr(copy,b.dataset.dk); const i=+b.dataset.ti;
+    if(!arr[i]) return;
+    arr[i].done=!arr[i].done;
+    b.setAttribute("aria-pressed",arr[i].done);
+    b.closest(".tl").classList.toggle("done",arr[i].done);
+    try{ await sbSaveFunction(f.id,(({id,...o})=>o)(copy)); }
+    catch(e){ toast("บันทึกไม่ได้: "+(e.code||"error")); }
+  };});
+}
+function maxPax(f){ return Math.max(0,...(f.sessions||[]).map(s=>Number(s.pax)||0)); }
+function opts(list,cur){
+  const a=[...list]; if(cur && !a.includes(cur)) a.unshift(cur);
+  return a.map(x=>`<option${cur===x?" selected":""}>${esc(x)}</option>`).join("");
+}
+function esc(s){ return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+["q","fMonth","fStatus"].forEach(id=>$("#"+id).addEventListener("input",render));
+
+/* ================= editor ================= */
+function blank(){
+  return { hotel:HOTEL, kind:KINDS[0], funcNo:"", company:"", taxId:"", address:"", contact:"", phone:"", email:"",
+    deposit:0, receiptNo:"", theme:"", files:[], rundown:[],
+    eventName:"", dateFrom:new Date().toISOString().slice(0,10), dateTo:"", status:"Draft",
+    sales:"", incharge:"", remark:"",
+    sessions:[{date:"",time:"08.00 - 17.00",room:HOTELS[HOTEL].rooms[0],type:"Break",price:150,pax:55,qty:2}],
+    menus:[], depts:{} };
+}
+window.addEventListener("error",ev=>{ try{ toast("ERR: "+(ev.message||"unknown")); }catch(e){} });
+function openJob(f){ try{ return openJobRaw(f); }catch(e){ toast("เปิดไม่ได้: "+e.message); throw e; } }
+function openJobRaw(f){ CUR = f ? JSON.parse(JSON.stringify(f)) : blank(); MODE = f ? "view" : "edit";
+  drawSheet(); $("#sheet").classList.add("on"); document.body.style.overflow="hidden"; }
+function drawSheet(){
+  $("#editBtn").style.display = (MODE==="view" && isAdmin()) ? "inline-block" : "none";
+  $("#saveBtn").style.display = (MODE==="edit" && isAdmin()) ? "inline-block" : "none";
+  if(MODE==="edit" && !isAdmin()) MODE="view";
+  if(MODE==="edit") drawForm(); else drawDetail();
+}
+$("#editBtn").onclick=()=>{ MODE="edit"; drawSheet(); };
+function close(){ $("#sheet").classList.remove("on"); document.body.style.overflow=""; CUR=null; }
+$("#addBtn").onclick=()=>openJob(null);
+$("#backBtn").onclick=close;
+$("#printBtn").onclick=()=>{ $("#sheet").querySelectorAll("details").forEach(d=>d.open=true); window.print(); };
+
+function thumb(x){
+  const isImg=(x.mime||"").startsWith("image/");
+  return isImg?`<img src="${esc(x.url)}" alt="${esc(x.name)}">`:`<div class="doc">📄</div>`;
+}
+function rdHTML(r,i){
+  return `<div class="rdrow" data-ri="${i}">
+    <input class="rt" value="${esc(r.time)}" placeholder="09.09">
+    <input class="ri" value="${esc(r.item)}" placeholder="รายการ">
+    <input class="rw" value="${esc(r.who)}" placeholder="ผู้รับผิดชอบ">
+    <button type="button" class="del">✕</button></div>`;
+}
+function redrawRd(focus){
+  const box=document.getElementById("rdBox"); if(!box) return;
+  CUR.rundown=CUR.rundown||[];
+  box.innerHTML=CUR.rundown.map((r,i)=>rdHTML(r,i)).join("");
+  box.closest(".sec").querySelector(".pill").textContent=CUR.rundown.length;
+  bindRd();
+  if(focus!=null){ const el=box.querySelector(`.rdrow[data-ri="${focus}"] .ri`); if(el) el.focus(); }
+}
+function bindRd(){
+  const box=document.getElementById("rdBox"); if(!box) return;
+  box.querySelectorAll(".rdrow").forEach(row=>{
+    const i=+row.dataset.ri, r=CUR.rundown[i]; if(!r) return;
+    row.querySelector(".rt").oninput=e=>{ r.time=e.target.value; };
+    row.querySelector(".rw").oninput=e=>{ r.who=e.target.value; };
+    const it=row.querySelector(".ri");
+    it.oninput=e=>{ r.item=e.target.value; };
+    it.onkeydown=e=>{ if(e.key==="Enter"){ e.preventDefault();
+      CUR.rundown.splice(i+1,0,{time:"",item:"",who:""}); redrawRd(i+1); } };
+    it.onpaste=e=>{
+      const txt=(e.clipboardData||window.clipboardData).getData("text")||"";
+      const lines=txt.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+      if(lines.length<2) return;
+      e.preventDefault();
+      const parsed=lines.map(L=>{
+        const m=L.match(/^(\d{1,2}[.:]\d{2})\s*(?:น\.)?\s*(.*)$/);
+        return m?{time:m[1].replace(":","."),item:m[2].trim(),who:""}:{time:"",item:L,who:""};
+      });
+      CUR.rundown.splice(i,1,...parsed); redrawRd(i+parsed.length-1);
+    };
+    row.querySelector(".del").onclick=()=>{ CUR.rundown.splice(i,1); redrawRd(); };
+  });
+}
+function fileHTML(x,i){
+  return `<div class="fitem" data-fi="${i}">
+    <a href="${esc(x.url)}" data-zoom="${esc(x.url)}" data-zname="${esc(x.tag||x.name)}">${thumb(x)}</a>
+    <div class="fmeta">
+      <span class="fn">${esc(x.name)}</span>
+      <select class="ftag">${opts(FILETAGS,x.tag||FILETAGS[FILETAGS.length-1])}</select>
+      <select class="fdept"><option value=""${!x.dept?" selected":""}>ทุกแผนกเห็น</option>
+        ${DEPTS.map(d=>`<option value="${d.k}"${x.dept===d.k?" selected":""}>${esc(d.l)}</option>`).join("")}</select>
+    </div>
+    <button type="button" class="fx">✕</button></div>`;
+}
+function redrawFiles(){
+  const box=document.getElementById("fileBox"); if(!box) return;
+  box.innerHTML=(CUR.files||[]).map((x,i)=>fileHTML(x,i)).join("");
+  box.closest(".sec").querySelector(".pill").textContent=(CUR.files||[]).length;
+  bindZoom(box);
+  box.querySelectorAll(".fitem").forEach(row=>{
+    const i=+row.dataset.fi, x=CUR.files[i]; if(!x) return;
+    row.querySelector(".ftag").onchange=e=>{ x.tag=e.target.value; };
+    row.querySelector(".fdept").onchange=e=>{ x.dept=e.target.value; };
+    row.querySelector(".fx").onclick=()=>{ CUR.files.splice(i,1); redrawFiles(); };
+  });
+}
+function deptBlock(f,dp){
+  const arr=taskList(f,dp.k);
+  return `<div class="grp" data-dk="${dp.k}">
+    <div class="gh"><b>${esc(dp.l)}</b><i class="${arr.length&&arr.every(x=>x.done)?"full":""}">${arr.filter(x=>x.done).length}/${arr.length}</i></div>
+    <div class="tasks">${arr.map((x,i)=>taskRow(dp.k,x,i)).join("")}</div>
+    <button type="button" class="btn sm" data-addtask="${dp.k}">+ เพิ่มบรรทัด</button>
+  </div>`;
+}
+function taskRow(k,x,i){
+  return `<div class="task ${x.done?"done":""}" data-tk="${k}" data-ti="${i}">
+    <button type="button" class="tick" aria-pressed="${!!x.done}">✓</button>
+    <input class="tt" value="${esc(x.t)}" placeholder="รายละเอียดงาน">
+    <input class="tw" value="${esc(x.who)}" placeholder="ผู้รับผิดชอบ">
+    <button type="button" class="del">✕</button></div>`;
+}
+function redrawDepts(focus){
+  const box=document.getElementById("deptBox"); if(!box){ drawForm(); return; }
+  box.innerHTML=DEPTS.map(dp=>deptBlock(CUR,dp)).join("");
+  bindDepts();
+  redrawFiles();
+  bindRd();
+  const ar=document.getElementById("addRd");
+  if(ar) ar.onclick=()=>{ CUR.rundown=CUR.rundown||[];
+    CUR.rundown.push({time:"",item:"",who:""}); redrawRd(CUR.rundown.length-1); };
+  const af=document.getElementById("addFile");
+  if(af) af.onclick=()=>{ if(!ASSETS){ toast("หน้านี้แนบไฟล์ไม่ได้"); return; } $("#attachFile").click(); };
+  const dep=$("#form").querySelector('[data-k="deposit"]');
+  if(dep) dep.oninput=()=>{ CUR.deposit=Number(dep.value)||0;
+    const d=document.getElementById("due"); if(d) d.textContent=nf(funcTotal(CUR)-CUR.deposit); };
+  if(focus){
+    const el=box.querySelector(`.task[data-tk="${focus[0]}"][data-ti="${focus[1]}"] .tt`);
+    if(el){ el.focus(); el.setSelectionRange(el.value.length,el.value.length); }
+  }
+}
+function bindDepts(){
+  const box=document.getElementById("deptBox"); if(!box) return;
+  box.querySelectorAll("[data-addtask]").forEach(b=>b.onclick=()=>{
+    const k=b.dataset.addtask, arr=ensureArr(CUR,k);
+    arr.push({t:"",done:false,who:""}); redrawDepts([k,arr.length-1]);
+  });
+  box.querySelectorAll(".task").forEach(row=>{
+    const k=row.dataset.tk, i=+row.dataset.ti;
+    const arr=ensureArr(CUR,k); const item=arr[i]; if(!item) return;
+    row.querySelector(".tt").oninput=e=>{ item.t=e.target.value; };
+    row.querySelector(".tw").oninput=e=>{ item.who=e.target.value; };
+    row.querySelector(".tt").onkeydown=e=>{
+      if(e.key==="Enter"){ e.preventDefault(); arr.splice(i+1,0,{t:"",done:false,who:""}); redrawDepts([k,i+1]); }
+      if(e.key==="Backspace" && !item.t && arr.length>1){ e.preventDefault(); arr.splice(i,1); redrawDepts([k,Math.max(0,i-1)]); }
+    };
+    row.querySelector(".tt").onpaste=e=>{
+      const txt=(e.clipboardData||window.clipboardData).getData("text")||"";
+      const lines=txt.split(/\r?\n/).map(x=>x.replace(/^[\s*•\-]+/,"").trim()).filter(Boolean);
+      if(lines.length<2) return;
+      e.preventDefault();
+      item.t=lines[0];
+      lines.slice(1).forEach((t,n)=>arr.splice(i+1+n,0,{t:t,done:false,who:""}));
+      redrawDepts([k,i+lines.length-1]);
+    };
+    row.querySelector(".tick").onclick=()=>{ item.done=!item.done; redrawDepts(); };
+    row.querySelector(".del").onclick=()=>{ arr.splice(i,1); redrawDepts(); };
+  });
+}
+function redrawMenus(){
+  const box=document.getElementById("menuBox");
+  if(!box){ drawForm(); return; }
+  box.innerHTML=(CUR.menus||[]).map((m,i)=>menuHTML(m,i)).join("");
+  bindForm(HOTELS[CUR.hotel||HOTEL].rooms);
+}
+function kv(k,v){ return v? `<div class="kv"><b>${k}</b><span>${esc(v)}</span></div>`:""; }
+function drawDetail(){
+  const f=CUR, rent=isRental(f);
+  $("#sheetTitle").textContent=f.company||"รายละเอียดงาน";
+  const tot=funcTotal(f), dep=Number(f.deposit)||0;
+  const st=deptStats(f);
+
+  const sess=(f.sessions||[]).map(x=>`<div class="vrow">
+    <div class="vt">${esc(x.type||"")}
+      <small>${esc([x.date,x.time,x.room].filter(Boolean).join(" · "))}</small>
+      <small>${rent?`${nf(x.price)} × ${nf(x.qty)}`:`${nf(x.price)} บาท × ${nf(x.pax)} ท่าน × ${nf(x.qty)} มื้อ`}</small></div>
+    <div class="vn">${nf(sessTotal(x))}</div></div>`).join("");
+
+  const menus=(f.menus||[]).map(m=>{
+    const picked=pickedText(m);
+    const buf=BUFFETS[m.set]?Object.entries(BUFFETS[m.set]).map(([h,a])=>esc(h)+": "+a.map(esc).join(", ")).join("<br>"):"";
+    return `<div class="vrow"><div class="vt"><b style="font-weight:600">${esc(m.meal||"")} · ${esc(m.set||"")}</b>
+      <small>${esc(m.date||"")}${m.pax?" · "+esc(m.pax):""}</small>
+      ${picked?`<small style="color:var(--ink)">${esc(picked)}</small>`:""}
+      ${m.items?`<small>${esc(m.items)}</small>`:""}
+      ${buf?`<small>${buf}</small>`:""}</div></div>`;
+  }).join("");
+
+  const depts=DEPTS.map(dp=>{
+    const arr=taskList(f,dp.k); if(!arr.length) return "";
+    const d=arr.filter(x=>x.done).length;
+    return `<div class="vdept"><h4>${esc(dp.l)}<i class="${d===arr.length?"full":""}">${d}/${arr.length}</i></h4>
+      ${arr.map((x,i)=>`<div class="vtask ${x.done?"done":""}">
+        <button class="tick" data-vk="${dp.k}" data-vi="${i}" aria-pressed="${!!x.done}">✓</button>
+        <span style="flex:1">${esc(x.t)}</span>${x.who?`<small>${esc(x.who)}</small>`:""}</div>`).join("")}</div>`;
+  }).join("");
+
+  const rd=(f.rundown||[]).length?(f.rundown||[]).map(r=>
+    `<div class="rd"><b>${esc(r.time||"")}</b><span>${esc(r.item||"")}</span>${r.who?`<small>${esc(r.who)}</small>`:""}</div>`).join(""):"";
+
+  const sameDay=ITEMS.filter(o=>o.id!==f.id && o.hotel===f.hotel &&
+    (o.dateFrom||"")<=(f.dateTo||f.dateFrom||"") && (o.dateTo||o.dateFrom||"")>=(f.dateFrom||""));
+  const sameHTML=sameDay.length?`<details class="sec" open><summary>งานอื่นในวันเดียวกัน <span class="pill">${sameDay.length}</span></summary><div class="secbody">
+    ${sameDay.map(o=>`<div class="same" data-goto="${o.id}">
+      <b>${esc(o.company||"(ไม่ระบุชื่อ)")}<br><span style="font-weight:400;color:var(--ink-2);font-size:12px">${esc(o.funcNo?"No."+o.funcNo+" · ":"")}${esc(rangeText(o))} · ${esc((o.sessions||[])[0]?.room||"")}</span></b>
+      <span class="tag ${tagCls(o.status)}">${esc(o.status||"Draft")}</span></div>`).join("")}
+  </div></details>`:"";
+
+  const files=(f.files||[]).length?`<div class="dthumbs">${f.files.map(x=>
+     `<a href="${esc(x.url)}" data-zoom="${esc(x.url)}" data-zname="${esc(x.tag||x.name)}">${thumb(x)}
+      <span style="display:block;font-size:10px;padding:3px 4px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(x.tag||x.name)}</span></a>`).join("")}</div>`:"";
+
+  $("#form").innerHTML=`
+  <div class="beohead" id="beoHead">${beoHeadHTML(f)}</div>
+
+  <details class="sec" open><summary>ข้อมูลงาน</summary><div class="secbody">
+    ${kv("ชื่องาน",f.eventName)}
+    ${kv("วันที่",rangeText(f))}
+    ${kv("บริษัท/หน่วยงาน",f.company)}
+    ${kv("ผู้ติดต่อ",[f.contact,f.phone,f.email].filter(Boolean).join(" · "))}
+    ${kv("Tax ID",f.taxId)}
+    ${kv("ที่อยู่",f.address)}
+    ${kv("โทนสี / ธีม",f.theme)}
+    ${kv("ผู้รับผิดชอบ",[f.sales&&"Sales: "+f.sales,f.incharge&&"In charge: "+f.incharge].filter(Boolean).join(" · "))}
+    ${kv("หมายเหตุ",f.remark)}
+  </div></details>
+
+  ${sess?`<details class="sec" open><summary>รอบ / ห้อง / ราคา</summary><div class="secbody">${sess}</div>
+    <div class="money">
+      <div><span>ยอดรวม</span><b>${nf(tot)}</b></div>
+      ${dep?`<div><span>มัดจำ${f.receiptNo?" ("+esc(f.receiptNo)+")":""}</span><b>${nf(dep)}</b></div>
+      <div><span>คงเหลือชำระวันงาน</span><b>${nf(tot-dep)}</b></div>`:""}
+    </div></details>`:""}
+
+  ${rd?`<details class="sec" open><summary>กำหนดการ (Run down) <span class="pill">${(f.rundown||[]).length}</span></summary><div class="secbody">${rd}</div></details>`:""}
+
+  ${menus?`<details class="sec" open><summary>เมนูอาหาร <span class="pill">${(f.menus||[]).length} มื้อ</span></summary><div class="secbody">${menus}</div></details>`:""}
+
+  ${depts?`<details class="sec" open><summary>งานตามแผนก <span class="pill">${st.d}/${st.t}</span></summary><div class="secbody">${depts}</div></details>`:""}
+
+  ${files?`<details class="sec" open><summary>ไฟล์แนบ <span class="pill">${(f.files||[]).length}</span></summary><div class="secbody">${files}</div></details>`:""}
+  ${sameHTML}
+  ${(f.id&&isAdmin())?'<button class="btn dang" id="vDel" style="width:100%;margin-top:6px">ลบงานนี้</button>':""}
+  <div style="height:20px"></div>`;
+
+  $("#form").querySelectorAll("[data-goto]").forEach(el=>el.onclick=()=>{
+    const o=ITEMS.find(x=>x.id===el.dataset.goto); if(o) openJob(o);
+  });
+  bindZoom($("#form"));
+  const vd=document.getElementById("vDel");
+  if(vd) vd.onclick=async()=>{
+    if(!confirm("ลบงาน \""+(f.company||"ไม่ระบุชื่อ")+"\" ถาวร?\nข้อมูลทั้งหมดจะหายไป กู้คืนไม่ได้")) return;
+    if(!DB){ toast("ลบไม่ได้ในหน้านี้"); return; }
+    try{ await sbDeleteFunction(f.id); toast("ลบแล้ว"); close(); }
+    catch(e){ toast("ลบไม่ได้: "+(e.code||"error")); }
+  };
+
+  $("#form").querySelectorAll(".tick[data-vk]").forEach(b=>{ if(!canTick()){ b.disabled=true; b.style.opacity=.45; return; } b.onclick=async()=>{
+    const arr=ensureArr(CUR,b.dataset.vk), i=+b.dataset.vi; if(!arr[i]) return;
+    arr[i].done=!arr[i].done;
+    b.setAttribute("aria-pressed",arr[i].done);
+    b.closest(".vtask").classList.toggle("done",arr[i].done);
+    const h4=b.closest(".vdept").querySelector("h4 i");
+    const n=b.closest(".vdept").querySelectorAll('.tick[aria-pressed="true"]').length;
+    const tt=b.closest(".vdept").querySelectorAll(".tick").length;
+    h4.textContent=n+"/"+tt; h4.classList.toggle("full",n===tt);
+    if(DB&&CUR.id){ try{ await sbSaveFunction(CUR.id,(({id,...o})=>o)(CUR)); }
+      catch(e){ toast("บันทึกไม่ได้: "+(e.code||"error")); } }
+  };});
+}
+function drawForm(){
+  const f=CUR, rooms=HOTELS[f.hotel||HOTEL].rooms;
+  $("#sheetTitle").textContent = f.id ? (f.company||"แก้ไขงาน") : "งานใหม่";
+  $("#form").innerHTML = `
+  <div class="beohead" id="beoHead">${beoHeadHTML(f)}</div>
+  <details class="sec" open><summary>ข้อมูลงาน</summary><div class="secbody">
+    <div class="row2">
+      <div class="f"><label>โรงแรม</label><select data-k="hotel">${HOTEL_ORDER.map(k=>`<option value="${k}"${(f.hotel||HOTEL)===k?" selected":""}>${esc(HOTELS[k].short)}</option>`).join("")}</select></div>
+      <div class="f"><label>Function No.</label><input data-k="funcNo" value="${esc(f.funcNo)}" placeholder="26/9"></div>
+    </div>
+    <div class="f"><label>ประเภทงาน</label><select data-k="kind">${opts(KINDS,f.kind||KINDS[0])}</select></div>
+    <div class="f"><label>บริษัท / หน่วยงาน</label><input data-k="company" value="${esc(f.company)}"></div>
+    <div class="f"><label>ชื่องาน / หลักสูตร</label><input data-k="eventName" value="${esc(f.eventName)}" placeholder='เช่น การอบรม "พลังทีม พลังองค์กร"'></div>
+    <div class="row2">
+      <div class="f"><label>วันที่เริ่ม</label><input type="date" data-k="dateFrom" value="${esc(f.dateFrom)}"></div>
+      <div class="f"><label>วันที่สิ้นสุด</label><input type="date" data-k="dateTo" value="${esc(f.dateTo)}"></div>
+    </div>
+    <div class="row2">
+      <div class="f"><label>สถานะ</label><select data-k="status">${STATUSES.map(s=>`<option${f.status===s?" selected":""}>${s}</option>`).join("")}</select></div>
+      <div class="f"><label>Tax ID</label><input data-k="taxId" value="${esc(f.taxId)}"></div>
+    </div>
+    <div class="f"><label>ที่อยู่</label><input data-k="address" value="${esc(f.address)}"></div>
+    <div class="f"><label>โทนสี / ธีมงาน</label><input data-k="theme" value="${esc(f.theme)}" placeholder="เช่น ฟ้า · ชมพู · ขาว · ครีม"></div>
+    <div class="row3">
+      <div class="f"><label>ผู้ติดต่อ</label><input data-k="contact" value="${esc(f.contact)}"></div>
+      <div class="f"><label>เบอร์โทร</label><input data-k="phone" value="${esc(f.phone)}"></div>
+      <div class="f"><label>อีเมล</label><input data-k="email" value="${esc(f.email)}"></div>
+    </div>
+    <div class="row2">
+      <div class="f"><label>Sales in charge</label><input data-k="sales" value="${esc(f.sales)}"></div>
+      <div class="f"><label>In charge</label><input data-k="incharge" value="${esc(f.incharge)}"></div>
+    </div>
+  </div></details>
+
+  <details class="sec" open><summary>รอบ / ห้อง / ราคา</summary>
+    <div class="secbody">
+      <div class="hint">${isRental(f)?"ยอดรวม = ราคา × จำนวน":"ยอดรวม = ราคาต่อท่าน × จำนวนท่าน × จำนวนมื้อ"}</div>
+      <div id="sessBox">${(f.sessions||[]).map((s,i)=>sessHTML(s,i,rooms,isRental(f))).join("")}</div>
+      <button class="btn sm" id="addSess">+ เพิ่มรอบ</button>
+    </div>
+    <div class="money">
+      <div><span>ยอดรวมทั้งงาน</span><b id="grand">${nf(funcTotal(f))}</b></div>
+      <div><span>มัดจำ</span><input type="number" inputmode="decimal" data-k="deposit" value="${esc(f.deposit||0)}"
+        style="width:100%;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:5px 8px;font-size:15px;font-weight:700"></div>
+      <div><span>เลขที่ใบเสร็จ</span><input data-k="receiptNo" value="${esc(f.receiptNo)}" placeholder="018/0877"
+        style="width:100%;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:5px 8px;font-size:14px"></div>
+      <div><span>คงเหลือชำระวันงาน</span><b id="due">${nf(funcTotal(f)-(Number(f.deposit)||0))}</b></div>
+    </div>
+  </details>
+
+  ${hasFood(f)?`<details class="sec" open><summary>เมนูอาหาร (แยกตามวัน) <span class="pill">${(f.menus||[]).length} วัน</span></summary><div class="secbody">
+    <div id="menuBox">${(f.menus||[]).map((m,i)=>menuHTML(m,i)).join("")}</div>
+    <button class="btn sm" id="addMenu">+ เพิ่มวัน</button>
+  </div></details>`:""}
+
+  <details class="sec" open><summary>กำหนดการ (Run down) <span class="pill">${(f.rundown||[]).length}</span></summary><div class="secbody">
+    <div class="hint">เวลา + รายการ + ผู้รับผิดชอบ · กด Enter ขึ้นบรรทัดใหม่ · วางหลายบรรทัดจากไฟล์กำหนดการได้</div>
+    <div id="rdBox">${(f.rundown||[]).map((r,i)=>rdHTML(r,i)).join("")}</div>
+    <button class="btn sm" id="addRd">+ เพิ่มบรรทัด</button>
+  </div></details>
+
+  <details class="sec" open><summary>ไฟล์แนบ <span class="pill">${(f.files||[]).length}</span></summary><div class="secbody">
+    <div class="hint">ผังที่นั่ง · ผังห้อง · อาร์ตเวิร์ค backdrop · ใบเสนอราคา — ทุกแผนกเปิดดูได้จากมือถือ</div>
+    <div class="files" id="fileBox">${(f.files||[]).map((x,i)=>fileHTML(x,i)).join("")}</div>
+    <button class="btn sm" id="addFile">+ แนบไฟล์</button>
+  </div></details>
+
+  <details class="sec" open><summary>แจกงานตามแผนก <span class="pill">${deptStats(f).d}/${deptStats(f).t}</span></summary><div class="secbody">
+    <div class="hint">พิมพ์บรรทัดละ 1 งาน กด Enter เพื่อขึ้นบรรทัดใหม่ · วางข้อความหลายบรรทัดจาก BEO ได้เลย ระบบแตกให้เอง</div>
+    <div id="deptBox">${DEPTS.map(dp=>deptBlock(f,dp)).join("")}</div>
+    <div class="f"><label>Remark</label><textarea data-k="remark">${esc(f.remark)}</textarea></div>
+  </div></details>
+
+  ${f.id?'<button class="btn dang" id="delBtn" style="width:100%;margin-top:6px">ลบงานนี้</button>':""}
+  <div style="height:20px"></div>`;
+
+  bindForm(rooms);
+}
+
+function sessHTML(s,i,rooms,rent){
+  return `<div class="line" data-si="${i}">
+    <div class="lh"><b>รอบที่ ${i+1}</b><span class="tot">${nf(sessTotal(s))}</span>
+      <button class="btn sm" data-dup="${i}">คัดลอก</button>
+      <button class="btn sm" data-del="${i}">ลบ</button></div>
+    <div class="row2">
+      <div class="f"><label>วันที่ (ข้อความ)</label><input data-s="date" value="${esc(s.date)}" placeholder="21-22/9/2026"></div>
+      <div class="f"><label>เวลา</label><input data-s="time" value="${esc(s.time)}" placeholder="08.00 - 17.00"></div>
+    </div>
+    <div class="row2">
+      <div class="f"><label>ห้อง</label><input list="roomList" data-s="room" value="${esc(s.room)}"></div>
+      <div class="f"><label>ประเภท</label><select data-s="type">${opts(TYPES,s.type)}</select></div>
+    </div>
+    ${rent ? `<div class="row2">
+      <div class="f"><label>ราคา</label><input type="number" inputmode="decimal" data-s="price" value="${esc(s.price)}"></div>
+      <div class="f"><label>จำนวน</label><input type="number" inputmode="numeric" data-s="qty" value="${esc(s.qty)}"></div>
+    </div><input type="hidden" data-s="pax" value="1">`
+    : `<div class="row3">
+      <div class="f"><label>ราคา/ท่าน</label><input type="number" inputmode="decimal" data-s="price" value="${esc(s.price)}"></div>
+      <div class="f"><label>จำนวนท่าน</label><input type="number" inputmode="numeric" data-s="pax" value="${esc(s.pax)}"></div>
+      <div class="f"><label>จำนวนมื้อ</label><input type="number" inputmode="numeric" data-s="qty" value="${esc(s.qty)}"></div>
+    </div>`}
+  </div>`;
+}
+function menuHTML(m,i){
+  const set=m.set||"Meeting Set (เลือกรายการ)";
+  let body="";
+  const def=MENUDEFS[set];
+  if(def){
+    body = def.groups.map(g=>{
+      const sel=(m.picks&&m.picks[g.k])||[];
+      const full=g.max<90 && sel.length>=g.max;
+      return `<div class="grp"><div class="gh"><b>${esc(g.l)}</b>
+        <i class="${full?"full":""}">${sel.length}${g.max<90?"/"+g.max:" รายการ"}</i></div>
+        <div class="chips">${g.items.map(it=>
+          `<button type="button" class="chip" data-g="${g.k}" data-v="${esc(it)}" aria-pressed="${sel.includes(it)}">${esc(it)}</button>`
+        ).join("")}</div></div>`;
+    }).join("") + (def.fixed||[]).map(([t,v])=>
+      `<div class="fixed"><b>${esc(t)}</b>${esc(v)}</div>`).join("");
+  } else if(BUFFETS[set]){
+    body = `<div class="setlist">${Object.entries(BUFFETS[set]).map(([h,arr])=>
+      `<div><b>${esc(h)}</b><span>${arr.map(esc).join("<br>")}</span></div>`).join("")}</div>`;
+  }
+  return `<div class="line" data-mi="${i}">
+    <div class="lh"><b>วันที่ ${i+1}</b>
+      <button class="btn sm" style="margin-left:auto" data-mcopy="${i}">คัดลอก</button>
+      <button class="btn sm" data-mdel="${i}">ลบ</button></div>
+    <div class="row2">
+      <div class="f"><label>วันที่</label><input type="date" data-m="date" value="${esc(m.date)}"></div>
+      <div class="f"><label>ชุดเมนู</label><select data-m="set">${opts(MENUSETS,set)}</select></div>
+    </div>
+    <div class="f"><label>มื้อ / ช่วง</label><select data-m="meal">${["อาหารกลางวัน","อาหารว่างเช้า","อาหารว่างบ่าย","อาหารเย็น","อื่นๆ"].map(x=>`<option${m.meal===x?" selected":""}>${x}</option>`).join("")}</select></div>
+    <div class="f"><label>จำนวน (บันทึกแบบที่เขียนมือได้)</label><input data-m="pax" value="${esc(m.pax)}" placeholder="สนง. 55 + พระคลัง 55 = 110 ท่าน"></div>
+    ${body}
+    <div class="f" style="margin-top:10px"><label>หมายเหตุครัว / รายการเพิ่มเติม</label><textarea data-m="items" style="min-height:60px">${esc(m.items)}</textarea></div>
+    <div class="picked">${esc(pickedText(m))||"<span style='opacity:.6'>ยังไม่ได้เลือกรายการ</span>"}</div>
+  </div>`;
+}
+function pickedText(m){
+  const def=MENUDEFS[m.set||""]; if(!def) return "";
+  const p=m.picks||{}, out=[];
+  def.groups.forEach(g=>{ if((p[g.k]||[]).length) out.push((p[g.k]||[]).join(" · ")); });
+  return out.join(" · ");
+}
+function toggleChip(i,gk,val){
+  const m=CUR.menus[i]; m.picks=m.picks||{};
+  const arr=m.picks[gk]=m.picks[gk]||[];
+  const at=arr.indexOf(val);
+  if(at>=0) arr.splice(at,1); else arr.push(val);
+}
+
+function bindForm(rooms){
+  if(!document.getElementById("roomList")){
+    const dl=document.createElement("datalist"); dl.id="roomList"; document.body.appendChild(dl);
+  }
+  document.getElementById("roomList").innerHTML = rooms.map(r=>`<option value="${esc(r)}">`).join("");
+
+  $("#form").querySelectorAll("[data-k]").forEach(el=>el.oninput=()=>{
+    CUR[el.dataset.k]=el.value;
+    if(el.dataset.k==="hotel"||el.dataset.k==="kind"){ drawForm(); }
+  });
+  bindDepts();
+  $("#form").querySelectorAll("[data-si]").forEach(box=>{
+    const i=+box.dataset.si;
+    box.querySelectorAll("[data-s]").forEach(el=>el.oninput=()=>{
+      CUR.sessions[i][el.dataset.s]=el.value;
+      box.querySelector(".tot").textContent=nf(sessTotal(CUR.sessions[i]));
+      $("#grand").textContent=nf(funcTotal(CUR));
+      const dd=document.getElementById("due"); if(dd) dd.textContent=nf(funcTotal(CUR)-(Number(CUR.deposit)||0));
+    });
+  });
+  $("#form").querySelectorAll("[data-mi]").forEach(box=>{
+    const i=+box.dataset.mi;
+    box.querySelectorAll("[data-m]").forEach(el=>el.oninput=()=>{
+      CUR.menus[i][el.dataset.m]=el.value;
+      if(el.dataset.m==="set"){ CUR.menus[i].picks={}; redrawMenus(); }
+    });
+    box.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{
+      toggleChip(i,c.dataset.g,c.dataset.v);
+      const on=c.getAttribute("aria-pressed")!=="true";
+      c.setAttribute("aria-pressed",on);
+      const grp=c.closest(".grp"), badge=grp.querySelector(".gh i");
+      const n=grp.querySelectorAll('.chip[aria-pressed="true"]').length;
+      const max=(badge.textContent.split("/")[1]||"").trim();
+      badge.textContent = max ? n+"/"+max : n+" รายการ";
+      if(max) badge.classList.toggle("full", n>=Number(max));
+      const pv=box.querySelector(".picked");
+      pv.innerHTML = esc(pickedText(CUR.menus[i]))||"<span style='opacity:.6'>ยังไม่ได้เลือกรายการ</span>";
+    });
+  });
+  $("#form").querySelectorAll("[data-dup]").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.dup; CUR.sessions.splice(i+1,0,{...CUR.sessions[i]}); drawForm(); });
+  $("#form").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{
+    CUR.sessions.splice(+b.dataset.del,1); drawForm(); });
+  $("#form").querySelectorAll("[data-mdel]").forEach(b=>b.onclick=()=>{
+    CUR.menus.splice(+b.dataset.mdel,1); redrawMenus(); });
+  $("#form").querySelectorAll("[data-mcopy]").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.mcopy;
+    CUR.menus.splice(i+1,0,JSON.parse(JSON.stringify(CUR.menus[i]))); redrawMenus(); });
+  $("#addSess").onclick=()=>{
+    const last=CUR.sessions[CUR.sessions.length-1]||{};
+    CUR.sessions.push({date:last.date||"",time:"12.00 - 13.00",room:last.room||rooms[0],type:"Lunch",price:600,pax:last.pax||55,qty:1});
+    drawForm(); };
+  $("#addMenu").onclick=()=>{ CUR.menus=CUR.menus||[];
+    const last=CUR.menus[CUR.menus.length-1]||{};
+    CUR.menus.push({date:"",set:last.set||"Meeting Set (เลือกรายการ)",meal:"อาหารกลางวัน",pax:last.pax||"",items:"",picks:{}});
+    redrawMenus(); };
+  const del=$("#delBtn"); if(del) del.onclick=async()=>{
+    if(!confirm("ลบงานนี้ถาวร?")) return;
+    try{ await sbDeleteFunction(CUR.id); toast("ลบแล้ว"); close(); }
+    catch(e){ toast("ลบไม่ได้: "+e.code); }
+  };
+}
+
+/* ---- ดูรูปแบบขยาย ---- */
+let LBZ=1;
+function lbSet(z){ LBZ=Math.max(1,Math.min(6,z)); $("#lbImg").style.width=(LBZ*100)+"%"; }
+function openLightbox(id,name){
+  $("#lbName").textContent=name||"";
+  $("#lbImg").src=id;
+  $("#lbOpen").href=id;
+  lbSet(1);
+  $("#lbWrap").scrollTop=0; $("#lbWrap").scrollLeft=0;
+  $("#lb").classList.add("on");
+}
+$("#lbClose").onclick=()=>$("#lb").classList.remove("on");
+$("#lbIn").onclick=()=>lbSet(LBZ*1.6);
+$("#lbOut").onclick=()=>lbSet(LBZ/1.6);
+$("#lbImg").onclick=()=>lbSet(LBZ>=3?1:LBZ*2);
+function bindZoom(root){
+  (root||document).querySelectorAll("a[data-zoom]").forEach(a=>a.onclick=e=>{
+    e.preventDefault(); openLightbox(a.dataset.zoom,a.dataset.zname||"");
+  });
+}
+
+/* ---- แนบไฟล์เข้างาน ---- */
+$("#attachFile").onchange=async e=>{
+  const files=Array.from(e.target.files||[]); e.target.value="";
+  if(!files.length||!CUR||!ASSETS) return;
+  CUR.files=CUR.files||[];
+  for(const file of files){
+    if(file.size>20*1024*1024){ toast(file.name+" ใหญ่เกิน 20 MB"); continue; }
+    toast("กำลังอัปโหลด "+file.name);
+    try{
+      const u=await sbUpload(file);
+      CUR.files.push({url:u,name:file.name,mime:file.type||"",tag:FILETAGS[FILETAGS.length-1],dept:""});
+      redrawFiles();
+    }catch(err){ toast("อัปโหลดไม่สำเร็จ: "+(err.code||"error")); }
+  }
+  toast("แนบแล้ว "+CUR.files.length+" ไฟล์ — อย่าลืมกดบันทึก");
+};
+
+/* ---- อ่าน BEO จากรูป ---- */
+function scanPrompt(){
+  const deptLines = DEPTS.map(d=>`  "${d.k}" = ${d.l}`).join("\n");
+  return [
+"คุณกำลังอ่านรูปเอกสาร BANQUET EVENT ORDER (BEO) หรือใบจองงานเลี้ยง/งานประชุมของโรงแรมในประเทศไทย",
+"อ่านข้อมูลทั้งหมดจากรูปที่แนบมา แล้วตอบกลับเป็น JSON object เพียงค่าเดียว ห้ามมีข้อความอื่นนอก JSON",
+"",
+"รูปแบบ JSON ที่ต้องการ:",
+'{',
+'  "funcNo": "เลข FUNCTION NO เช่น 27/9",',
+'  "company": "ชื่อบริษัท/หน่วยงาน (COMPANY)",',
+'  "taxId": "", "address": "", "contact": "ชื่อผู้ติดต่อ", "phone": "", "email": "",',
+'  "eventName": "ชื่องาน/หลักสูตร เช่น การอบรม \"พลังทีม พลังองค์กร\"",',
+'  "dateFrom": "YYYY-MM-DD", "dateTo": "YYYY-MM-DD",',
+'  "status": "Final | Confirm | Tentative | Draft",',
+'  "sales": "SALES IN CHARGE", "incharge": "EVENT / Event In Charge", "remark": "",',
+'  "sessions": [ { "date": "ข้อความวันที่ตามที่เขียนในตาราง เช่น 22-25 and 29-30/9/2026",',
+'                  "time": "08.00 - 17.00", "room": "ชื่อห้อง + ชั้น",',
+'                  "type": "Break | Lunch | Dinner | Buffet Dinner | Coffee Break | เช่าห้อง (Rent room) | ค่าเช่าจอ LED | เครื่องดื่ม | อื่นๆ",',
+'                  "price": ราคาต่อท่านเป็นตัวเลข, "pax": จำนวนท่านเป็นตัวเลข, "qty": จำนวนมื้อ/จำนวนครั้งเป็นตัวเลข } ],',
+'  "menus": [ { "date": "YYYY-MM-DD", "meal": "อาหารว่างเช้า | อาหารกลางวัน | อาหารว่างบ่าย | อาหารเย็น | อื่นๆ",',
+'               "set": "Meeting Set (เลือกรายการ) | Buffet A | Buffet B | Buffet C | Buffet D | Buffet F | อาหารว่าง (เบรก) | Bento Set | โต๊ะจีน | อื่นๆ",',
+'               "pax": "ข้อความจำนวนคนตามที่เขียน", "items": "รายการอาหารของมื้อนั้น คั่นด้วย , " } ],',
+'  "kind": "ประชุม / สัมมนา | งานเลี้ยง / จัดเลี้ยง | งานแต่ง / หมั้น | คอนเสิร์ต / แฟนมีต | เช่าห้องอย่างเดียว",',
+'  "deposit": จำนวนเงินมัดจำเป็นตัวเลข ถ้าไม่มีให้ใส่ 0, "receiptNo": "เลขที่ใบเสร็จมัดจำ",',
+'  "theme": "โทนสี/ธีมงาน ถ้ามี",',
+'  "rundown": [ { "time": "09.09", "item": "สวมแหวน", "who": "" } ],',
+'  "depts": { "key ของแผนก": ["งานย่อย 1", "งานย่อย 2"] }',
+'}',
+"",
+"key ของแผนกที่ใช้ได้ (ใช้ key ให้ตรงกับเนื้อหาในเอกสาร):",
+deptLines,
+"",
+"กติกา:",
+"- depts: แต่ละบรรทัดที่ขึ้นต้นด้วย * ในเอกสาร ให้แยกเป็น 1 รายการ ตัด * และ - หน้าบรรทัดออก เก็บข้อความภาษาไทยไว้ครบ",
+"- แผนกไหนไม่มีข้อมูลในเอกสาร ให้ข้ามไป ไม่ต้องใส่ key นั้น",
+"- วันที่ dateFrom/dateTo ให้แปลงเป็นปี ค.ศ. (ถ้าเอกสารเขียน พ.ศ. 2569 = ค.ศ. 2026)",
+"- sessions: แยกเป็นแถวตามตารางในเอกสาร และแยกตามราคาที่ระบุในบรรทัด PRICE",
+"  ถ้าเอกสารบอกว่าอาหารว่าง 150 บาท 2 มื้อ ให้ price=150 qty=2 ต่อวัน โดยคูณจำนวนวันเข้าไปใน qty ถ้าเป็นงานหลายวัน",
+"- menus: ถ้าเอกสารระบุรายการอาหารว่างแยกตามวัน ให้แตกเป็นหลายรายการตามวัน",
+"- ถ้าอ่านค่าไหนไม่ได้ ให้ใส่เป็นข้อความว่าง หรือ 0 ห้ามเดา",
+"- ถ้าเอกสารระบุว่าไม่มีอาหาร ให้ menus เป็น [] และ kind เป็นงานเช่าห้องหรือคอนเสิร์ตตามเนื้อหา",
+"- งานเช่าห้อง: แต่ละรายการค่าใช้จ่าย (ค่าเช่าห้อง ค่าเช่าจอ LED ค่านำเข้า Light ฯลฯ) ให้เป็น 1 session โดย pax=1 และ qty=จำนวนตามใบ",
+"- rundown: ถ้าเอกสารมีกำหนดการเป็นเวลา (Program / พิธีการ / Sequence) ให้แตกเป็นรายการ เรียงตามเวลา",
+"- ตอบเป็น JSON อย่างเดียว"
+].join("\n");
+}
+
+$("#scanBtn").onclick=async()=>{
+  if(!SAMPLE){ toast("ยังไม่ได้ตั้งค่าตัวอ่าน BEO — ใส่ beoFunctionUrl ใน config.js"); return; }
+  $("#scanFile").click();
+};
+$("#scanCancel").onclick=()=>{ if(SCANCTL) SCANCTL.abort(); };
+$("#scanFile").onchange=async e=>{
+  const files=Array.from(e.target.files||[]); e.target.value="";
+  if(!files.length) return;
+  $("#scanning").classList.add("on");
+  $("#scanTitle").textContent="กำลังอ่านรูป BEO...";
+  $("#scanMsg").textContent="ใช้เวลาประมาณ 20\u201360 วินาที";
+  try{
+    const d=await askBEO(files, scanPrompt());
+    $("#scanning").classList.remove("on");
+    applyScan(d);
+  }catch(err){
+    $("#scanning").classList.remove("on");
+    toast(err.code==="not_configured" ? "ยังไม่ได้ตั้งค่าตัวอ่าน BEO" : "อ่านไม่สำเร็จ: "+(err.code||err.message||"error"));
+  }
+};
+
+function applyScan(d){
+  if(!d||typeof d!=="object"){ toast("อ่านข้อมูลไม่ได้"); return; }
+  const f=blank();
+  ["funcNo","company","taxId","address","contact","phone","email","eventName",
+   "dateFrom","dateTo","status","sales","incharge","remark","kind"].forEach(k=>{
+    if(typeof d[k]==="string" && d[k].trim()) f[k]=d[k].trim();
+  });
+  if(!STATUSES.includes(f.status)) f.status="Draft";
+  if(!KINDS.includes(f.kind)) f.kind=KINDS[0];
+  if(Number(d.deposit)) f.deposit=Number(d.deposit);
+  if(typeof d.receiptNo==="string") f.receiptNo=d.receiptNo;
+  if(typeof d.theme==="string") f.theme=d.theme;
+  f.rundown = Array.isArray(d.rundown)?d.rundown.map(r=>({time:String(r.time||""),item:String(r.item||""),who:String(r.who||"")})):[];
+  if(Array.isArray(d.sessions) && d.sessions.length){
+    f.sessions=d.sessions.map(x=>({
+      date:String(x.date||""), time:String(x.time||""), room:String(x.room||""),
+      type:TYPES.includes(x.type)?x.type:"อื่นๆ",
+      price:Number(x.price)||0, pax:Number(x.pax)||0, qty:Number(x.qty)||1 }));
+  }
+  f.menus = Array.isArray(d.menus) ? d.menus.map(x=>({
+    date:String(x.date||""), meal:String(x.meal||"อาหารกลางวัน"),
+    set:MENUSETS.includes(x.set)?x.set:"อื่นๆ",
+    pax:String(x.pax||""), items:String(x.items||""), picks:{} })) : [];
+  f.files=[];
+  f.depts={};
+  if(d.depts && typeof d.depts==="object"){
+    Object.entries(d.depts).forEach(([k,v])=>{
+      if(!DEPTS.some(x=>x.k===k)) return;
+      const arr=Array.isArray(v)?v:String(v||"").split(/\r?\n/);
+      f.depts[k]=arr.map(t=>String(t).replace(/^[\s*•\-]+/,"").trim()).filter(Boolean)
+        .map(t=>({t:t,done:false,who:""}));
+    });
+  }
+  const n=Object.values(f.depts).reduce((a,x)=>a+x.length,0);
+  CUR=f; MODE="edit"; drawSheet(); $("#sheet").classList.add("on"); document.body.style.overflow="hidden";
+  toast("อ่านได้ "+(f.sessions||[]).length+" รอบ · "+n+" งานแผนก — ตรวจสอบก่อนบันทึก");
+}
+
+/* ================= สิทธิ์การใช้งาน ================= */
+let ROLE="view";
+try{ ROLE=localStorage.getItem("bqRole")||"view"; }catch(e){}
+const isAdmin = ()=>ROLE==="admin";
+const canTick = ()=>ROLE==="admin"||ROLE==="staff";
+
+function roleLabel(r){ return r==="admin"?"แอดมิน":r==="staff"?"แผนก":"ดูอย่างเดียว"; }
+function applyRole(){
+  const a=isAdmin();
+  $("#addBtn").style.display = a ? "block" : "none";
+  $("#cfgBtn").style.display = a ? "flex" : "none";
+  $("#scanBtn").style.display = (a && SAMPLE) ? "block" : "none";
+  const rt=$("#roleTag"); if(rt) rt.textContent=roleLabel(ROLE);
+  if($("#sheet").classList.contains("on")) drawSheet();
+}
+function showGate(){
+  $("#gateLogo").innerHTML=HOTEL_ORDER.slice(0,2).map(k=>logoHTML(k)).join("");
+  $("#gateTitle").textContent=APPTITLE;
+  $("#gateFoot").textContent=HOTEL_ORDER.map(k=>HOTELS[k].short).join("  ·  ");
+  $("#gateCode").value=""; $("#gateErr").textContent="";
+  $("#gate").classList.add("on"); document.body.style.overflow="hidden";
+}
+function enterAs(r){
+  ROLE=r; try{ localStorage.setItem("bqRole",r); }catch(e){}
+  $("#gate").classList.remove("on"); document.body.style.overflow="";
+  applyRole(); render();
+}
+$("#gateGo").onclick=()=>{
+  const v=$("#gateCode").value.trim();
+  const ac=(CFG.adminCode||"").trim(), sc=(CFG.staffCode||"").trim();
+  if(!ac && !sc){ $("#gateErr").textContent="ยังไม่ได้ตั้งรหัส — เข้าเป็นแอดมินเพื่อไปตั้งที่ ⚙"; enterAs("admin"); return; }
+  if(ac && v===ac) return enterAs("admin");
+  if(sc && v===sc) return enterAs("staff");
+  $("#gateErr").textContent="รหัสไม่ถูกต้อง";
+  $("#gateCode").value="";
+};
+$("#gateCode").onkeydown=e=>{ if(e.key==="Enter") $("#gateGo").click(); };
+$("#gateView").onclick=()=>enterAs("view");
+$("#outBtn").onclick=()=>{ ROLE="view"; try{localStorage.removeItem("bqRole");}catch(e){} applyRole(); showGate(); };
+
+/* ================= ตั้งค่าระบบ (แอดมิน) ================= */
+function hex2rgba(h,a){
+  h=(h||"#6b3fa0").replace("#","");
+  if(h.length===3) h=h.split("").map(c=>c+c).join("");
+  const n=parseInt(h,16);
+  return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
+}
+function applyCfg(c){
+  c=c||{};
+  if(Array.isArray(c.hotels)&&c.hotels.length){
+    const H={},ord=[];
+    c.hotels.forEach(x=>{ if(!x||!x.k) return;
+      H[x.k]={name:x.name||x.short||x.k,short:x.short||x.name||x.k,
+        color:x.color||"#6b3fa0",rooms:Array.isArray(x.rooms)?x.rooms:[]};
+      ord.push(x.k); });
+    if(ord.length){ HOTELS=H; HOTEL_ORDER=ord; if(!HOTELS[HOTEL]) HOTEL=ord[0]; }
+  }
+  KINDS     = (Array.isArray(c.kinds)&&c.kinds.length)?c.kinds:[...DEF_KINDS];
+  TYPES     = (Array.isArray(c.types)&&c.types.length)?c.types:[...DEF_TYPES];
+  MENUSETS  = (Array.isArray(c.menusets)&&c.menusets.length)?c.menusets:[...DEF_MENUSETS];
+  FILETAGS  = (Array.isArray(c.filetags)&&c.filetags.length)?c.filetags:[...DEF_FILETAGS];
+  RENTAL_KINDS = Array.isArray(c.rentalKinds)?c.rentalKinds:["คอนเสิร์ต / แฟนมีต","เช่าห้องอย่างเดียว"];
+  APPTITLE  = c.title || "Banquet & Event";
+  document.title = APPTITLE;
+  if(c.accent){
+    const r=document.documentElement.style;
+    r.setProperty("--accent",c.accent);
+    r.setProperty("--accent-soft",hex2rgba(c.accent,.14));
+    r.setProperty("--accent-ink","#ffffff");
+  }
+}
+let CFG={}, GATED=false, LOGOTARGET=null;
+function drawCfg(){
+  const hotels = HOTEL_ORDER.map(k=>({k,...HOTELS[k]}));
+  $("#cForm").innerHTML=`
+  <details class="sec" open><summary>ทั่วไป</summary><div class="secbody">
+    <div class="f"><label>ชื่อเว็บ</label><input id="cTitle" value="${esc(APPTITLE)}"></div>
+    <div class="f"><label>สีหลักของเว็บ</label>
+      <input type="color" id="cAccent" value="${esc(CFG.accent||"#6b3fa0")}" style="height:44px;padding:4px"></div>
+    <div class="hint">สีนี้ใช้กับปุ่ม วันที่ และแถบต่างๆ ทั้งเว็บ</div>
+    <div class="row2">
+      <div class="f"><label>รหัสแอดมิน</label><input id="cAdminCode" value="${esc(CFG.adminCode||"")}" placeholder="แก้ไขได้ทุกอย่าง"></div>
+      <div class="f"><label>รหัสพนักงานแผนก</label><input id="cStaffCode" value="${esc(CFG.staffCode||"")}" placeholder="ติ๊กงานเสร็จได้"></div>
+    </div>
+    <div class="hint">เว้นว่างทั้งคู่ = ไม่ต้องใส่รหัส ใครเปิดก็เป็นแอดมิน · คนที่ไม่มีรหัสยังกด "เข้าดูอย่างเดียว" ได้เสมอ</div>
+  </div></details>
+
+  <details class="sec" open><summary>โรงแรม <span class="pill">${hotels.length}</span></summary><div class="secbody">
+    <div class="hint">แก้ชื่อ สีประจำโรงแรม และรายชื่อห้อง (บรรทัดละ 1 ห้อง)</div>
+    <div id="cHotels">${hotels.map((h,i)=>hotelBlock(h,i)).join("")}</div>
+    <button class="btn sm" id="cAddHotel">+ เพิ่มโรงแรม</button>
+  </div></details>
+
+  <details class="sec"><summary>แผนก <span class="pill">${DEPTS.length}</span></summary><div class="secbody">
+    <div class="hint">ลบแผนกออกได้ งานที่บันทึกไว้แล้วไม่หาย</div>
+    <div id="cDepts"></div>
+    <button class="btn sm" id="cAddDept">+ เพิ่มแผนก</button>
+  </div></details>
+
+  ${listSec("ประเภทงาน","cKinds",KINDS,"งานที่เป็นประเภทเช่าห้อง/คอนเสิร์ต จะซ่อนหัวข้อเมนูอัตโนมัติ")}
+  ${listSec("ประเภทงานที่ไม่มีอาหาร","cRental",RENTAL_KINDS,"พิมพ์ชื่อประเภทงานให้ตรงกับด้านบน")}
+  ${listSec("ประเภทรายการ / ค่าใช้จ่าย","cTypes",TYPES,"ใช้ในหัวข้อ รอบ / ห้อง / ราคา")}
+  ${listSec("ชุดเมนู","cMenusets",MENUSETS,"")}
+  ${listSec("ป้ายกำกับไฟล์แนบ","cFiletags",FILETAGS,"")}
+
+  <button class="btn dang" id="cReset" style="width:100%;margin-top:6px">คืนค่าเริ่มต้นทั้งหมด</button>
+  <div style="height:24px"></div>`;
+  drawCDepts();
+  bindCfg();
+}
+function listSec(title,id,arr,hint){
+  return `<details class="sec"><summary>${esc(title)} <span class="pill">${arr.length}</span></summary><div class="secbody">
+    ${hint?`<div class="hint">${esc(hint)}</div>`:""}
+    <div class="f"><label>บรรทัดละ 1 รายการ</label>
+      <textarea id="${id}" style="min-height:130px">${esc(arr.join("\n"))}</textarea></div>
+  </div></details>`;
+}
+function hotelBlock(h,i){
+  return `<div class="line" data-hi="${i}">
+    <div class="lh"><b>โรงแรมที่ ${i+1}</b>
+      <button class="btn sm" style="margin-left:auto" data-hdel="${i}">ลบ</button></div>
+    <div class="row2">
+      <div class="f"><label>ชื่อย่อ (แสดงบนแท็บ)</label><input class="hs" value="${esc(h.short)}"></div>
+      <div class="f"><label>สีประจำโรงแรม</label><input type="color" class="hc" value="${esc(h.color||"#6b3fa0")}" style="height:40px;padding:3px"></div>
+    </div>
+    <div class="f"><label>โลโก้</label>
+      <div style="display:flex;gap:10px;align-items:center">
+        <span style="flex:0 0 auto;color:${esc(h.color||"#6b3fa0")};display:flex">${LOGOS[h.k]?`<img src="${esc(LOGOS[h.k])}" style="height:38px;background:#fff;border-radius:8px;padding:3px 6px">`:(h.k==="bys"?LOGO_B:LOGO_Q).replace("<svg ",'<svg style="height:38px" ')}</span>
+        <button type="button" class="btn sm" data-hlogo="${esc(h.k)}">เปลี่ยนโลโก้</button>
+      </div></div>
+    <div class="f"><label>ชื่อเต็ม</label><input class="hn" value="${esc(h.name)}"></div>
+    <div class="f"><label>รายชื่อห้อง (บรรทัดละ 1 ห้อง)</label>
+      <textarea class="hr" style="min-height:90px">${esc((h.rooms||[]).join("\n"))}</textarea></div>
+  </div>`;
+}
+let CTMP=[];
+function drawCDepts(){
+  const box=document.getElementById("cDepts"); if(!box) return;
+  box.innerHTML=CTMP.map((d,i)=>`<div class="task" data-cdi="${i}">
+    <input class="tt" value="${esc(d.l)}"><button type="button" class="del">✕</button></div>`).join("");
+  box.querySelectorAll(".task").forEach(r=>{
+    const i=+r.dataset.cdi;
+    r.querySelector(".tt").oninput=e=>{ CTMP[i].l=e.target.value; };
+    r.querySelector(".del").onclick=()=>{ CTMP.splice(i,1); drawCDepts(); };
+  });
+}
+function bindCfg(){
+  $("#cForm").querySelectorAll("[data-hdel]").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.hdel; const arr=readHotels();
+    if(arr.length<=1){ toast("ต้องมีอย่างน้อย 1 โรงแรม"); return; }
+    arr.splice(i,1); HOTELS={}; HOTEL_ORDER=[];
+    arr.forEach(h=>{ HOTELS[h.k]=h; HOTEL_ORDER.push(h.k); });
+    drawCfg();
+  });
+  $("#cForm").querySelectorAll("[data-hlogo]").forEach(b=>b.onclick=()=>{
+    if(!ASSETS){ toast("หน้านี้อัปโหลดไม่ได้"); return; }
+    LOGOTARGET=b.dataset.hlogo; $("#logoFile").click();
+  });
+  $("#cAddHotel").onclick=()=>{
+    const arr=readHotels();
+    const k="h"+Date.now().toString(36);
+    arr.push({k,short:"โรงแรมใหม่",name:"โรงแรมใหม่",color:"#1b5f96",rooms:[]});
+    HOTELS={}; HOTEL_ORDER=[];
+    arr.forEach(h=>{ HOTELS[h.k]=h; HOTEL_ORDER.push(h.k); });
+    drawCfg();
+  };
+  $("#cAddDept").onclick=()=>{ CTMP.push({k:"d"+Date.now().toString(36),l:""}); drawCDepts(); };
+  $("#cReset").onclick=async()=>{
+    if(!confirm("คืนค่าเริ่มต้นทั้งหมด?\nชื่อโรงแรม สี หัวข้อ และแผนก จะกลับเป็นค่าตั้งต้น\nข้อมูลงานไม่หาย")) return;
+    if(!DB) return;
+    try{ await sbSaveSetting("config",{});
+         await sbSaveSetting("depts",{list:DEFAULT_DEPTS});
+         toast("คืนค่าแล้ว"); $("#cBack").click(); }
+    catch(e){ toast("ไม่สำเร็จ: "+(e.code||"error")); }
+  };
+}
+function readHotels(){
+  const out=[];
+  $("#cForm").querySelectorAll("[data-hi]").forEach(row=>{
+    const i=+row.dataset.hi, k=HOTEL_ORDER[i]||("h"+i);
+    out.push({k,
+      short:row.querySelector(".hs").value.trim()||"โรงแรม",
+      name:row.querySelector(".hn").value.trim()||"โรงแรม",
+      color:row.querySelector(".hc").value,
+      rooms:row.querySelector(".hr").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean)});
+  });
+  return out;
+}
+const lines = id => ($("#"+id)?.value||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+
+$("#cfgBtn").onclick=()=>{
+  CTMP=JSON.parse(JSON.stringify(DEPTS));
+  drawCfg(); $("#csheet").classList.add("on"); document.body.style.overflow="hidden";
+};
+$("#cBack").onclick=()=>{ $("#csheet").classList.remove("on"); document.body.style.overflow=""; };
+$("#cSave").onclick=async()=>{
+  if(!DB){ toast("บันทึกไม่ได้ในหน้านี้"); return; }
+  const cfg={
+    title:$("#cTitle").value.trim()||"Banquet & Event",
+    accent:$("#cAccent").value,
+    adminCode:$("#cAdminCode").value.trim(),
+    staffCode:$("#cStaffCode").value.trim(),
+    hotels:readHotels(),
+    kinds:lines("cKinds"), rentalKinds:lines("cRental"), types:lines("cTypes"),
+    menusets:lines("cMenusets"), filetags:lines("cFiletags")
+  };
+  const depts=CTMP.filter(d=>(d.l||"").trim());
+  if(!depts.length){ toast("ต้องมีอย่างน้อย 1 แผนก"); return; }
+  if(!cfg.hotels.length){ toast("ต้องมีอย่างน้อย 1 โรงแรม"); return; }
+  try{
+    await sbSaveSetting("config",cfg);
+    await sbSaveSetting("depts",{list:depts});
+    toast("บันทึกแล้ว"); $("#cBack").click();
+  }catch(e){ toast("บันทึกไม่สำเร็จ: "+(e.code||"error")); }
+};
+
+/* ---- ตั้งค่าชื่อแผนก ---- */
+let DTMP=[];
+$("#deptCfg").onclick=()=>{ DTMP=JSON.parse(JSON.stringify(DEPTS)); drawDList();
+  $("#dsheet").classList.add("on"); document.body.style.overflow="hidden"; };
+$("#dBack").onclick=()=>{ $("#dsheet").classList.remove("on"); document.body.style.overflow=""; };
+function drawDList(){
+  $("#dList").innerHTML=DTMP.map((d,i)=>`<div class="task" data-di="${i}">
+    <input class="tt" value="${esc(d.l)}"><button type="button" class="del">✕</button></div>`).join("");
+  $("#dList").querySelectorAll(".task").forEach(r=>{
+    const i=+r.dataset.di;
+    r.querySelector(".tt").oninput=e=>{ DTMP[i].l=e.target.value; };
+    r.querySelector(".del").onclick=()=>{ DTMP.splice(i,1); drawDList(); };
+  });
+}
+$("#dAdd").onclick=()=>{ DTMP.push({k:"d"+Date.now().toString(36),l:""}); drawDList(); };
+$("#dSave").onclick=async()=>{
+  const list=DTMP.filter(d=>(d.l||"").trim());
+  if(!list.length){ toast("ต้องมีอย่างน้อย 1 แผนก"); return; }
+  if(!DB){ toast("บันทึกไม่ได้ในหน้านี้"); return; }
+  try{ await sbSaveSetting("depts",{list:list}); toast("บันทึกแล้ว"); $("#dBack").click(); }
+  catch(e){ toast("บันทึกไม่สำเร็จ: "+(e.code||"error")); }
+};
+
+/* ---- อัปโหลดโลโก้ ---- */
+$("#logoBtn").onclick=()=>$("#logoFile").click();
+$("#logoFile").onchange=async e=>{
+  const file=e.target.files&&e.target.files[0]; e.target.value="";
+  if(!file) return;
+  if(!ASSETS||!DB){ toast("อัปโหลดไม่ได้ในหน้านี้"); return; }
+  if(file.size>2*1024*1024){ toast("ไฟล์ใหญ่เกิน 2 MB"); return; }
+  toast("กำลังอัปโหลด...");
+  try{
+    const u=await sbUpload(file);
+    const next={...LOGOS, [LOGOTARGET||HOTEL]:u};
+    await sbSaveSetting("logos",next);
+    const hk=LOGOTARGET||HOTEL; LOGOTARGET=null;
+    LOGOS=next; drawBrand();
+    if($("#csheet").classList.contains("on")) drawCfg();
+    toast("เปลี่ยนโลโก้ "+(HOTELS[hk]||{short:""}).short+" แล้ว");
+  }catch(err){ toast("อัปโหลดไม่สำเร็จ: "+(err.code||"error")); }
+};
+
+function beoHeadHTML(f){
+  const hk=f.hotel||HOTEL, h=HOTELS[hk];
+  return logoHTML(hk)+`<div class="t"><b>${esc(h.name)}</b>
+    <span>${esc(f.kind||KINDS[0])}${f.funcNo?" · FUNCTION NO : "+esc(f.funcNo):""}</span></div>
+    <span class="tag ${tagCls(f.status)}">${esc(f.status||"Draft")}</span>`;
+}
+
+$("#saveBtn").onclick=async()=>{
+  if(!CUR) return;
+  if(!DB){ toast("บันทึกไม่ได้ในหน้านี้"); return; }
+  const body={...CUR}; delete body.id;
+  body.total=funcTotal(CUR); body.updatedAt=new Date().toISOString();
+  try{
+    CUR.id = await sbSaveFunction(CUR.id, body);
+    toast("บันทึกแล้ว"); close();
+  }catch(e){
+    if(e.code==="invalid_argument"){ READONLY=true; toast("บัญชีนี้แก้ไขข้อมูลไม่ได้"); }
+    else toast("บันทึกไม่สำเร็จ: "+(e.code||"error"));
+  }
+};
+
+boot();
+</script>
+</body>
+</html>
