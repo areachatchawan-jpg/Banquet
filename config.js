@@ -6,8 +6,8 @@
 const APP_CONFIG = {
 
   /* --- 1. จำเป็น: จาก Supabase -> Project Settings -> API --- */
-  supabaseUrl:     "ใส่ Project URL ตรงนี้",        // เช่น https://abcdefgh.supabase.co
-  supabaseAnonKey: "ใส่ anon public key ตรงนี้",    // ขึ้นต้นด้วย eyJ...
+  supabaseUrl:  "https://gunfisisabudxeqxqiet.supabase.co",
+  supabaseAnonKey: "sb_publishable_xw4diCn3g-WNMvJJXz_22A_Y6wk9a4W",
 
   /* --- 2. ไม่บังคับ: ตัวอ่าน BEO จากรูปด้วย AI ---
      ใส่ทีหลังได้ ถ้าเว้นว่างไว้ ปุ่ม "อ่านงานใหม่จากรูป BEO" จะไม่ขึ้น
